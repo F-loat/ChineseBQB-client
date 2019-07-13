@@ -39,8 +39,9 @@ export default class Index extends Component<Props, State> {
       mode: 'cors'
     })
 
+    const typeTestReg = /[jpg|gif]$/i
     const images = Array.isArray(data) ? data
-      .filter(file => /[jpg|gif]$/.test(file.path))
+      .filter(file => typeTestReg.test(file.path))
       .map(img => {
         return {
           name: img.name.replace(/\..*$/, ''),
