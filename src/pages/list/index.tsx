@@ -4,8 +4,8 @@ import BQBImage from '../../components/bqb-image'
 import './index.less'
 
 interface ImageItem {
-  name?: string,
   src: string,
+  name?: string,
 }
 
 interface State {
@@ -35,19 +35,27 @@ export default class Index extends Component<Props, State> {
     const { name } = this.$router.params
 
     const { data } = await Taro.request({
-      url: `https://proxy.youngon.com.cn/github/api/repos/zhaoolee/ChineseBQB/contents/${name}`,
+      url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${name}/index.md`,
       mode: 'cors'
     })
 
-    const typeTestReg = /[jpg|gif]$/i
-    const images = Array.isArray(data) ? data
-      .filter(file => typeTestReg.test(file.path))
-      .map(img => {
-        return {
-          name: img.name.replace(/\..*$/, ''),
-          src: img.download_url
-        }
-      }) : []
+    const tagMatchReg = /\!\[.*\]/g
+    const imgTags = data && data.match(tagMatchReg)
+
+    const infoMatchReg = /\!\[(.*master\/.*\/(.*))\]/
+    const images: Array<ImageItem> = imgTags.map(item => {
+      const matchInfos: Array<string> = item.match(infoMatchReg)
+
+      if (!matchInfos) {
+        return null
+      }
+
+      return {
+        src: matchInfos[1],
+        name: matchInfos[2].replace(/\..*$/, '')
+      }
+    })
+    .filter(item => !!item)
 
     const urls = images.map(img => img.src)
 

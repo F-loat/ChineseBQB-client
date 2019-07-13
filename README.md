@@ -8,7 +8,7 @@
 
 * 图片资源来自 [ChineseBQB](https://github.com/zhaoolee/ChineseBQB) 项目
 
-* 由于小程序无法直接调用 GitHub 的 API (未备案)，所以通过 Nginx 做了一层代理
+* 由于小程序无法直接访问 GitHub，所以通过 Nginx 做了一层代理
 
 ```
 server {

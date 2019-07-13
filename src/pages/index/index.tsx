@@ -46,12 +46,13 @@ export default class Index extends Component<Props, State> {
       return {}
     }
 
-    const types = imgTags
+    const infoMatchReg = /.*master\/(.*)\/(.*)'.*已收录(\d*)张/
+    const types: Array<TypeItem> = imgTags
       .map(item => {
-        const matchInfos = item.match(/.*master\/(.*)\/(.*)'.*已收录(\d*)张/)
+        const matchInfos: Array<string> = item.match(infoMatchReg)
 
         if (!matchInfos) {
-          return {}
+          return null
         }
 
         const typeFullName = matchInfos[1]
@@ -66,6 +67,7 @@ export default class Index extends Component<Props, State> {
           imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`
         }
       })
+      .filter(item => !!item)
 
     this.setState({ types })
 
