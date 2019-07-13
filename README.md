@@ -32,3 +32,14 @@ server {
   ssl_certificate_key /etc/nginx/keys/proxy.youngon.com.cn.key;
 }
 ```
+
+## 截图
+
+<p style="vertical-align: center">
+  <img alt="首页" src="./screenshots/index.jpg" width="33%" />
+  <img alt="小程序码" src="./screenshots/qrcode.jpg" width="33%" />
+  <img alt="列表" src="./screenshots/list.jpg" width="33%" />
+  <img alt="预览" src="./screenshots/preview.jpg" width="33%" />
+  <img alt="关于" src="./screenshots/about.jpg" width="33%" />
+  <img alt="分享" src="./screenshots/share.jpg" width="33%" />
+</p>
