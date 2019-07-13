@@ -65,7 +65,9 @@ export default class Index extends Component<Props, State> {
 
   componentDidMount() {
     const { title } = this.$router.params
-    Taro.setNavigationBarTitle({ title })
+    if (title) {
+      Taro.setNavigationBarTitle({ title })
+    }
     this.fetchImages()
   }
 
@@ -84,7 +86,7 @@ export default class Index extends Component<Props, State> {
     const { images = [] } = this.state
     return (
       <View className='list'>
-        {images.map(img => (<View className="item" key={img.name}>
+        {images.map(img => (<View className="item" key={img.src}>
           <BQBImage
             src={img.src}
             onClick={() => this.handlePreview(img.src)}

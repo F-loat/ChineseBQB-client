@@ -96,10 +96,10 @@ export default class Index extends Component<Props, State> {
 
     return (
       <View className='list'>
-        {types.map(type => (<Navigator className="item type-item" key={type.name} url={type.link}>
+        {types.map(type => (<Navigator className="item type-item" key={type.imgSrc} url={type.link}>
           <Text className="type-num">{type.num}张</Text>
           <BQBImage src={type.imgSrc} />
-          <Text className="item-name">{type.name}</Text>
+          <Text className="item-name">{type.name || '未命名'}</Text>
         </Navigator>))}
         <Navigator className="item" url="/pages/about/index">
           <Text className="about-icon">关于</Text>
