@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Navigator, Image, Text } from '@tarojs/components'
+import { View, Navigator, Text } from '@tarojs/components'
+import BQBImage from '../../components/bqb-image'
 import './index.less'
 
 interface TypeItem {
@@ -92,12 +93,7 @@ export default class Index extends Component<Props, State> {
     return (
       <View className='list'>
         {types.map(type => (<Navigator className="item" key={type.name} url={type.link}>
-          <Image
-            className="item-image"
-            mode="aspectFill"
-            lazyLoad
-            src={type.imgSrc}
-          />
+          <BQBImage src={type.imgSrc} />
           <Text className="item-name">{type.name}</Text>
         </Navigator>))}
         <Navigator className="item" url="/pages/about/index">

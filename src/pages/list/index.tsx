@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
+import BQBImage from '../../components/bqb-image'
 import './index.less'
 
 interface ImageItem {
@@ -83,12 +84,9 @@ export default class Index extends Component<Props, State> {
     return (
       <View className='list'>
         {images.map(img => (<View className="item" key={img.name}>
-          <Image
-            onClick={() => this.handlePreview(img.src)}
-            className="item-image"
-            mode="aspectFill"
-            lazyLoad
+          <BQBImage
             src={img.src}
+            onClick={() => this.handlePreview(img.src)}
           />
           <Text className="item-name">{img.name}</Text>
         </View>))}
