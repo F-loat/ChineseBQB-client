@@ -38,7 +38,8 @@ export default class Index extends Component<Props, State> {
 
     Taro.setStorage({ key: 'readme', data })
 
-    const imgTags = data && data.match(/<img height='100px' src='(.*)'/g)
+    const tagMatchReg = /<img height='100px' src='(.*)' \/> \| \[(.*)\(已收录(\d*)张\)\]\((.*)\)/g
+    const imgTags = data && data.match(tagMatchReg)
 
     if (!imgTags) {
       return {}
@@ -46,7 +47,7 @@ export default class Index extends Component<Props, State> {
 
     const types = imgTags
       .map(item => {
-        const matchInfos = item.match(/.*master\/(.*)\/(.*)'/)
+        const matchInfos = item.match(/.*master\/(.*)\/(.*)'.*已收录(\d*)张/)
 
         if (!matchInfos) {
           return {}
