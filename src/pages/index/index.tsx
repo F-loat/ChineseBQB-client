@@ -4,6 +4,7 @@ import BQBImage from '../../components/bqb-image'
 import './index.less'
 
 interface TypeItem {
+  num: number,
   name: string,
   link: string,
   imgSrc: string,
@@ -56,8 +57,10 @@ export default class Index extends Component<Props, State> {
         const typeFullName = matchInfos[1]
         const typeName = typeFullName.replace(/^(\w)*/, '').replace(/BQB$/, '')
         const imgName = matchInfos[2]
+        const typeNum = Number(matchInfos[3])
 
         return {
+          num: typeNum,
           name: typeName,
           link: `/pages/list/index?name=${typeFullName}&title=${typeName}`,
           imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`
@@ -93,7 +96,8 @@ export default class Index extends Component<Props, State> {
 
     return (
       <View className='list'>
-        {types.map(type => (<Navigator className="item" key={type.name} url={type.link}>
+        {types.map(type => (<Navigator className="item type-item" key={type.name} url={type.link}>
+          <Text className="type-num">{type.num}张</Text>
           <BQBImage src={type.imgSrc} />
           <Text className="item-name">{type.name}</Text>
         </Navigator>))}
