@@ -27,21 +27,10 @@ const config = {
   defineConstants: {
   },
   copy: {
-    patterns: [
-      {
-        from: 'src/wemark',
-        to: 'dist/wemark'
-      }
-    ],
-    options: {
-    }
+    patterns: [],
+    options: { }
   },
   weapp: {
-    compile: {
-      exclude: [
-        'src/wemark/remarkable.js'
-      ]
-    },
     module: {
       postcss: {
         autoprefixer: {
@@ -56,9 +45,7 @@ const config = {
         },
         pxtransform: {
           enable: true,
-          config: {
-
-          }
+          config: { }
         },
         url: {
           enable: true,

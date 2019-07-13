@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import marked from 'marked'
+import { View, RichText } from '@tarojs/components'
 import './index.less'
 
 interface State {
@@ -17,17 +18,15 @@ export default class Index extends Component<Props, State> {
   }
 
   config: Config = {
-    navigationBarTitleText: '关于',
-    usingComponents: {
-      wemark: '../../wemark/wemark'
-    }
+    navigationBarTitleText: '关于'
   }
 
   componentDidMount() {
     Taro
       .getStorage({ key: 'readme' })
       .then((res) => {
-        this.setState({ readme: res.data })
+        const readme = marked(res.data).replace(/<img/g, '<img style="max-width: 100%"')
+        this.setState({ readme })
       })
   }
 
@@ -40,7 +39,7 @@ export default class Index extends Component<Props, State> {
   render() {
     return (
       <View className="about">
-        <wemark md={this.state.readme} link highlight type='wemark' />
+        <RichText nodes={this.state.readme}></RichText>
       </View>
     )
   }

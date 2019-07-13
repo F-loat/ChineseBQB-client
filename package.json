@@ -34,6 +34,7 @@
     "@tarojs/taro-swan": "1.3.8",
     "@tarojs/taro-tt": "1.3.8",
     "@tarojs/taro-weapp": "1.3.8",
+    "marked": "^0.7.0",
     "nerv-devtools": "^1.4.0",
     "nervjs": "^1.4.0"
   },
