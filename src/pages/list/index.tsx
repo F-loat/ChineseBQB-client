@@ -96,6 +96,10 @@ export default class Index extends Component<Props, State> {
   }
 
   async onPullDownRefresh() {
+    this.setState({
+      images: [],
+      urls: []
+    })
     await this.fetchImages()
     Taro.stopPullDownRefresh()
   }
