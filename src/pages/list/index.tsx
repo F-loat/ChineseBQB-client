@@ -9,8 +9,8 @@ interface ImageItem {
 }
 
 interface State {
-  images: Array<ImageItem>,
-  urls: Array<string>
+  images: ImageItem[],
+  urls: string[]
 }
 
 interface Props { }
@@ -23,6 +23,9 @@ export default class Index extends Component<Props, State> {
       urls: []
     }
   }
+
+  images: ImageItem[]
+  urls: string[]
 
   config: Config = {
     navigationBarTitleText: '中国表情包',
@@ -43,8 +46,9 @@ export default class Index extends Component<Props, State> {
     const imgTags = data && data.match(tagMatchReg)
 
     const infoMatchReg = /\!\[(.*master\/.*\/(.*))\]/
-    const images: Array<ImageItem> = imgTags.map(item => {
-      const matchInfos: Array<string> = item.match(infoMatchReg)
+
+    this.images = imgTags.map(item => {
+      const matchInfos: string[] = item.match(infoMatchReg)
 
       if (!matchInfos) {
         return null
@@ -57,11 +61,23 @@ export default class Index extends Component<Props, State> {
     })
     .filter(item => !!item)
 
-    const urls = images.map(img => img.src)
+    this.urls = this.images.map(img => img.src)
 
-    this.setState({ images, urls })
+    this.showMoreImages()
 
     Taro.hideLoading()
+  }
+
+  showMoreImages = () => {
+    const { images, urls } = this.state
+
+    const newImages = this.images.splice(0, 20)
+    const newUrls = this.urls.splice(0, 20)
+
+    this.setState({
+      images: images.concat(newImages),
+      urls: urls.concat(newUrls)
+    })
   }
 
   handlePreview = (src) => {
@@ -82,6 +98,12 @@ export default class Index extends Component<Props, State> {
   async onPullDownRefresh() {
     await this.fetchImages()
     Taro.stopPullDownRefresh()
+  }
+
+  onReachBottom() {
+    if (this.images.length) {
+      this.showMoreImages()
+    }
   }
 
   onShareAppMessage() {

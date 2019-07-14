@@ -11,7 +11,7 @@ interface TypeItem {
 }
 
 interface State {
-  types: Array<TypeItem>
+  types: TypeItem[]
 }
 
 interface Props { }
@@ -47,9 +47,9 @@ export default class Index extends Component<Props, State> {
     }
 
     const infoMatchReg = /.*master\/(.*)\/(.*)'.*已收录(\d*)张/
-    const types: Array<TypeItem> = imgTags
+    const types: TypeItem[] = imgTags
       .map(item => {
-        const matchInfos: Array<string> = item.match(infoMatchReg)
+        const matchInfos: string[] = item.match(infoMatchReg)
 
         if (!matchInfos) {
           return null
