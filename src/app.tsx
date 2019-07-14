@@ -33,13 +33,21 @@ class App extends Component {
     }
   }
 
-  componentDidMount () {}
+  checkUpdate = () => {
+    const updateManager = Taro.getUpdateManager()
 
-  componentDidShow () {}
+    updateManager.onUpdateReady(async () => {
+      const { confirm } = await Taro.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用？'
+      })
+      if (confirm) updateManager.applyUpdate()
+    })
+  }
 
-  componentDidHide () {}
-
-  componentDidCatchError () {}
+  componentDidMount () {
+    this.checkUpdate()
+  }
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
