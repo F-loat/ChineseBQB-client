@@ -63,6 +63,11 @@ export default class Index extends Component<Props, State> {
 
     this.urls = this.images.map(img => img.src)
 
+    this.setState({
+      images: [],
+      urls: []
+    })
+
     this.showMoreImages()
 
     Taro.hideLoading()
@@ -96,10 +101,6 @@ export default class Index extends Component<Props, State> {
   }
 
   async onPullDownRefresh() {
-    this.setState({
-      images: [],
-      urls: []
-    })
     await this.fetchImages()
     Taro.stopPullDownRefresh()
   }
