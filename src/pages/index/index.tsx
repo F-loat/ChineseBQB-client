@@ -68,6 +68,7 @@ export default class Index extends Component<Props, State> {
         }
       })
       .filter(item => !!item)
+      .sort((item, nextItem) => (nextItem.num - item.num))
 
     this.setState({ types })
 
