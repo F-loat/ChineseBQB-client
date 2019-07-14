@@ -119,6 +119,7 @@ export default class Index extends Component<Props, State> {
 
   render() {
     const { images = [] } = this.state
+
     return (
       <View className='list'>
         {images.map(img => (<View className="item" key={img.src}>

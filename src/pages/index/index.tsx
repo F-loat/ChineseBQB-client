@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Navigator, Text } from '@tarojs/components'
+import { View, Navigator, Button, Text } from '@tarojs/components'
 import BQBImage from '../../components/bqb-image'
 import './index.less'
 
@@ -108,6 +108,7 @@ export default class Index extends Component<Props, State> {
           <Text className="about-icon">关于</Text>
           <Text className="item-name">关于</Text>
         </Navigator>
+        <Button className="contact-btn" open-type="contact">+</Button>
       </View>
     )
   }
