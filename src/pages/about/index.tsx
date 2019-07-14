@@ -30,12 +30,6 @@ export default class Index extends Component<Props, State> {
       })
   }
 
-  onShareAppMessage() {
-    return {
-      title: '关于中国表情包'
-    }
-  }
-
   render() {
     return (
       <View className="about">
