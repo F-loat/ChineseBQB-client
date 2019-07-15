@@ -145,7 +145,7 @@ export default class Index extends Component<Props, State> {
         <Button
           className="flat-btn random-btn"
           onClick={() => this.randomImages()}
-        >=</Button>
+        >≈</Button>
       </View>
     )
   }
