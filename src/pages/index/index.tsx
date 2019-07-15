@@ -108,7 +108,7 @@ export default class Index extends Component<Props, State> {
           <Text className="about-icon">关于</Text>
           <Text className="item-name">关于</Text>
         </Navigator>
-        <Button className="contact-btn" open-type="contact">+</Button>
+        <Button className="flat-btn contact-btn" open-type="contact">+</Button>
       </View>
     )
   }
