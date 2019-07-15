@@ -2,6 +2,30 @@
 
 > 中国表情包大集合客户端
 
+## 运行
+
+* 克隆仓库
+
+``` sh
+git clone https://github.com/F-loat/ChineseBQB-client.git
+```
+
+* 安装依赖
+
+``` sh
+npm install
+```
+
+* 执行构建（开发模式）
+
+``` sh
+npm run dev:weapp
+```
+
+* 预览效果
+
+> 使用微信开发者工具导入项目，并将 AppID 清除
+
 ## 说明
 
 * 本项目使用 [Taro](https://github.com/NervJS/taro) 框架开发
