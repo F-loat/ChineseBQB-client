@@ -4,6 +4,7 @@ node_js:
 install:
   - yarn
 script:
+  - yarn global add @tarojs/cli
   - yarn build:h5
   - cp -r ./dist/* .
 deploy:
