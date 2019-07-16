@@ -1,14 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Navigator, Button, Text } from '@tarojs/components'
+import { TypeItem, parseTypes } from '../../utils'
 import BQBImage from '../../components/bqb-image'
 import './index.less'
-
-interface TypeItem {
-  num: number,
-  name: string,
-  link: string,
-  imgSrc: string,
-}
 
 interface State {
   types: TypeItem[]
@@ -39,36 +33,7 @@ export default class Index extends Component<Props, State> {
 
     Taro.setStorage({ key: 'readme', data })
 
-    const tagMatchReg = /<img height='100px' src='(.*)' \/> \| \[(.*)\(已收录(\d*)张\)\]\((.*)\)/g
-    const imgTags = data && data.match(tagMatchReg)
-
-    if (!imgTags) {
-      return {}
-    }
-
-    const infoMatchReg = /.*master\/(.*)\/(.*)'.*已收录(\d*)张/
-    const types: TypeItem[] = imgTags
-      .map(item => {
-        const matchInfos: string[] = item.match(infoMatchReg)
-
-        if (!matchInfos) {
-          return null
-        }
-
-        const typeFullName = matchInfos[1]
-        const typeName = typeFullName.replace(/^(\w)*/, '').replace(/BQB$/, '')
-        const imgName = matchInfos[2]
-        const typeNum = Number(matchInfos[3])
-
-        return {
-          num: typeNum,
-          name: typeName,
-          link: `/pages/list/index?name=${typeFullName}&title=${typeName}`,
-          imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`
-        }
-      })
-      .filter(item => !!item)
-      .sort((item, nextItem) => (nextItem.num - item.num))
+    const types = parseTypes(data)
 
     this.setState({ types })
 

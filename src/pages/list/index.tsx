@@ -1,12 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
+import { ImageItem, parseImages } from '../../utils'
 import BQBImage from '../../components/bqb-image'
 import './index.less'
-
-interface ImageItem {
-  src: string,
-  name?: string,
-}
 
 interface State {
   images: ImageItem[],
@@ -42,25 +38,7 @@ export default class Index extends Component<Props, State> {
       mode: 'cors'
     })
 
-    const tagMatchReg = /\!\[.*\]/g
-    const imgTags = data && data.match(tagMatchReg)
-
-    const infoMatchReg = /\!\[(.*master\/.*\/(.*))\]/
-
-    this.images = imgTags.map(item => {
-      const matchInfos: string[] = item.match(infoMatchReg)
-
-      if (!matchInfos) {
-        return null
-      }
-
-      return {
-        src: matchInfos[1],
-        name: matchInfos[2].replace(/\..*$/, '')
-      }
-    })
-    .filter(item => !!item)
-
+    this.images = parseImages(data)
     this.urls = this.images.map(img => img.src)
 
     this.showMoreImages(true)
