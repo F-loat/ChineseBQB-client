@@ -64,7 +64,7 @@ const config = {
     }
   },
   h5: {
-    publicPath: '/',
+    publicPath: '/ChineseBQB-client/',
     staticDirectory: 'static',
     module: {
       postcss: {

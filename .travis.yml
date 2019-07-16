@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - '10'
+install:
+  - yarn
+script:
+  - yarn build:h5
+  - cp -r ./dist/* .
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: master
