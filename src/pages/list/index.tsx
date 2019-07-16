@@ -35,7 +35,8 @@ export default class Index extends Component<Props, State> {
 
     const { data } = await Taro.request({
       url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${name}/index.md`,
-      mode: 'cors'
+      dataType: 'text',
+      responseType: 'text'
     })
 
     this.images = parseImages(data)
