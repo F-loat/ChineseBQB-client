@@ -46,7 +46,9 @@ class App extends Component {
   }
 
   componentDidMount () {
-    this.checkUpdate()
+    if (process.env.TARO_ENV === 'weapp') {
+      this.checkUpdate()
+    }
   }
 
   // 在 App 类中的 render() 函数没有实际作用
