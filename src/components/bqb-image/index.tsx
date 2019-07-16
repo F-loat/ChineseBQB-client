@@ -1,9 +1,9 @@
 import Taro, { Component } from '@tarojs/taro'
-import { Image } from '@tarojs/components'
+import { Image, View } from '@tarojs/components'
 import './index.less'
 
 interface Props {
-  src: string,
+  src?: string,
   onClick?: any
 }
 
@@ -15,14 +15,15 @@ export default class Index extends Component<Props> {
   render() {
     const { src, onClick } = this.props
 
-    return (
-      <Image
-        className="bqb-image"
-        mode="aspectFill"
-        lazyLoad
-        src={src}
-        onClick={onClick}
-      />
-    )
+    return src ? <Image
+      className="bqb-image"
+      mode="aspectFill"
+      lazyLoad
+      src={src}
+      onClick={onClick}
+    /> : <View
+      className="bqb-image"
+      onClick={onClick}
+    />
   }
 }
