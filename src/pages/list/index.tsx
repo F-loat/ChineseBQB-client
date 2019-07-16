@@ -107,9 +107,13 @@ export default class Index extends Component<Props, State> {
 
   componentDidMount() {
     const { title } = this.$router.params
+
     if (title) {
-      Taro.setNavigationBarTitle({ title })
+      Taro.setNavigationBarTitle({
+        title: decodeURIComponent(title)
+      })
     }
+
     this.fetchImages()
   }
 
