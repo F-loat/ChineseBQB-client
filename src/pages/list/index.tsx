@@ -102,6 +102,7 @@ export default class Index extends Component<Props, State> {
 
     this.showMoreImages(true)
 
+    Taro.pageScrollTo({ scrollTop: 0 })
     Taro.showToast({ title: '表情包已随机排序', icon: 'none' })
   }
 
