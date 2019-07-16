@@ -13,6 +13,10 @@ git clone https://github.com/F-loat/ChineseBQB-client.git
 * 安装依赖
 
 ``` sh
+# 安装 CLI
+npm install -g @tarojs/cli
+
+# 安装项目依赖
 npm install
 ```
 
