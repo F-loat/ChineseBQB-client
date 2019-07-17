@@ -6,11 +6,11 @@ install:
 script:
   - yarn global add @tarojs/cli
   - yarn build:h5
-  - cp -r ./dist/* .
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   keep_history: true
+  local_dir: dist
   on:
     branch: master
