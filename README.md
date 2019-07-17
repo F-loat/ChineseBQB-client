@@ -2,15 +2,21 @@
 
 > 中国表情包大集合客户端
 
+## 预览
+
+* 扫描下方小程序码
+
+* 访问在线 [Demo](https://f-loat.github.io/ChineseBQB-client)
+
 ## 运行
 
-* 克隆仓库
+1. 克隆仓库
 
 ``` sh
 git clone https://github.com/F-loat/ChineseBQB-client.git
 ```
 
-* 安装依赖
+2. 安装依赖
 
 ``` sh
 # 安装 CLI
@@ -20,15 +26,21 @@ npm install -g @tarojs/cli
 npm install
 ```
 
-* 执行构建（开发模式）
+3. 运行项目
 
 ``` sh
+# 小程序
 npm run dev:weapp
+
+# 网页
+npm run dev:h5
 ```
 
-* 预览效果
+4. 预览效果
 
-> 使用微信开发者工具导入项目，并将 AppID 清除
+* 小程序 使用微信开发者工具导入项目，并将 AppID 清除
+
+* 网页 使用浏览器访问 `http://127.0.0.1:10086`
 
 ## 说明
 
@@ -36,7 +48,7 @@ npm run dev:weapp
 
 * 图片资源来自 [ChineseBQB](https://github.com/zhaoolee/ChineseBQB) 项目
 
-* 由于小程序无法直接访问 GitHub，所以通过 Nginx 做了一层代理
+* 由于小程序无法直接访问 GitHub (未备案)，所以通过 Nginx 做了一层代理
 
 ```
 server {
