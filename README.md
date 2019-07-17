@@ -1,12 +1,12 @@
 # ChineseBQB-client
 
-> 中国表情包大集合客户端
+> 开源表情包小程序
 
 ## 预览
 
 * 扫描下方小程序码
 
-* 访问在线 [Demo](https://f-loat.github.io/ChineseBQB-client)
+* 访问网页版 [Demo](https://f-loat.github.io/ChineseBQB-client)
 
 ## 运行
 
@@ -75,11 +75,11 @@ server {
 
 ## 截图
 
-<p style="vertical-align: center">
-  <img alt="首页" src="./screenshots/index.jpg" width="33%" />
-  <img alt="小程序码" src="./screenshots/qrcode.jpg" width="33%" />
-  <img alt="列表" src="./screenshots/list.jpg" width="33%" />
-  <img alt="预览" src="./screenshots/preview.jpg" width="33%" />
-  <img alt="关于" src="./screenshots/about.jpg" width="33%" />
-  <img alt="分享" src="./screenshots/share.jpg" width="33%" />
+<p>
+  <img alt="首页" src="./screenshots/index.jpg" width="32%" />
+  <img alt="小程序码" src="./screenshots/qrcode.jpg" width="32%" />
+  <img alt="列表" src="./screenshots/list.jpg" width="32%" />
+  <img alt="预览" src="./screenshots/preview.jpg" width="32%" />
+  <img alt="关于" src="./screenshots/about.jpg" width="32%" />
+  <img alt="分享" src="./screenshots/share.jpg" width="32%" />
 </p>
