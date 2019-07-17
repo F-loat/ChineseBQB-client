@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import marked from 'marked'
-import { View, RichText } from '@tarojs/components'
+import { View, Button, RichText } from '@tarojs/components'
 import './index.less'
 
 interface State {
@@ -21,6 +21,20 @@ export default class Index extends Component<Props, State> {
     navigationBarTitleText: '关于'
   }
 
+  rewardDeveloper = () => {
+    const urls = [
+      'https://github.com/F-loat/ChineseBQB-client/raw/master/images/tuyan.jpg',
+      'https://github.com/F-loat/ChineseBQB-client/raw/master/images/zhaozhao.jpg'
+    ]
+
+    const randomIndex = Math.random() > 0.5 ? 0 : 1
+
+    Taro.previewImage({
+      urls,
+      current: urls[randomIndex]
+    })
+  }
+
   componentDidMount() {
     Taro
       .getStorage({ key: 'readme' })
@@ -34,6 +48,10 @@ export default class Index extends Component<Props, State> {
     return (
       <View className="about">
         <RichText nodes={this.state.readme}></RichText>
+        <Button
+          className="flat-btn reward-btn"
+          onClick={() => this.rewardDeveloper()}
+        >赏</Button>
       </View>
     )
   }
