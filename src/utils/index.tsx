@@ -11,9 +11,10 @@ export interface ImageItem {
 }
 
 export const parseTypes = (data: string): TypeItem[] => {
-  const tagMatchReg = /<img height='100px' src='(.*)' \/> \| \[(.*)\(已收录(\d*)张\)\]\((.*)\)/g
+  const tagMatchReg = /\|.*已收录.*\|/g
   const imgTags = data && data.match(tagMatchReg)
 
+  console.log(imgTags)
   if (!imgTags) {
     return []
   }
@@ -47,7 +48,7 @@ export const parseTypes = (data: string): TypeItem[] => {
 
 export const parseImages = (data: string): ImageItem[] => {
   const tagMatchReg = /\!\[.*\]/g
-  const imgTags = data.match(tagMatchReg)
+  const imgTags = data && data.match(tagMatchReg)
 
   if (!imgTags) {
     return []
