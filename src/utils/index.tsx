@@ -14,7 +14,6 @@ export const parseTypes = (data: string): TypeItem[] => {
   const tagMatchReg = /\|.*已收录.*\|/g
   const imgTags = data && data.match(tagMatchReg)
 
-  console.log(imgTags)
   if (!imgTags) {
     return []
   }
