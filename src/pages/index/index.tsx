@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Navigator, Button, Text } from '@tarojs/components'
-import { TypeItem, parseTypes } from '../../utils'
+import { TypeItem, parseTypes, smartLoading } from '../../utils'
 import BQBImage from '../../components/bqb-image'
 import './index.less'
 
@@ -28,7 +28,14 @@ export default class Index extends Component<Props, State> {
   }
 
   fetchTypes = async () => {
-    Taro.showLoading({ title: '加载中' })
+    const cachedData = Taro.getStorageSync('readme')
+
+    if (cachedData) {
+      this.types = parseTypes(cachedData)
+      this.showMoreTypes(true)
+    }
+
+    const hideLoading = smartLoading('加载中', !!cachedData)
 
     const { data } = await Taro.request({
       url: 'https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/README.md',
@@ -39,10 +46,9 @@ export default class Index extends Component<Props, State> {
     Taro.setStorage({ key: 'readme', data })
 
     this.types = parseTypes(data)
-
     this.showMoreTypes(true)
 
-    Taro.hideLoading()
+    hideLoading()
   }
 
   showMoreTypes = (reload?: boolean) => {

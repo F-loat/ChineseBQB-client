@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Text } from '@tarojs/components'
-import { ImageItem, parseImages } from '../../utils'
+import { ImageItem, parseImages, smartLoading } from '../../utils'
 import BQBImage from '../../components/bqb-image'
 import './index.less'
 
@@ -29,9 +29,16 @@ export default class Index extends Component<Props, State> {
   }
 
   fetchImages = async () => {
-    Taro.showLoading({ title: '加载中' })
-
     const { name } = this.$router.params
+    const cachedData = Taro.getStorageSync(name)
+
+    if (cachedData) {
+      this.images = parseImages(cachedData)
+      this.urls = this.images.map(img => img.src)
+      this.showMoreImages(true)
+    }
+
+    const hideLoading = smartLoading('加载中', !!cachedData)
 
     const { data } = await Taro.request({
       url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${name}/index.md`,
@@ -39,12 +46,13 @@ export default class Index extends Component<Props, State> {
       responseType: 'text'
     })
 
+    Taro.setStorage({ key: name, data })
+
     this.images = parseImages(data)
     this.urls = this.images.map(img => img.src)
-
     this.showMoreImages(true)
 
-    Taro.hideLoading()
+    hideLoading()
   }
 
   showMoreImages = (reload?: boolean) => {

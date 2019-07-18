@@ -1,3 +1,5 @@
+import Taro from '@tarojs/taro'
+
 export interface TypeItem {
   num: number,
   name?: string,
@@ -8,6 +10,16 @@ export interface TypeItem {
 export interface ImageItem {
   src: string,
   name?: string,
+}
+
+export const smartLoading = (title: string, cached?: boolean): Function => {
+  if (cached) {
+    Taro.showNavigationBarLoading()
+    return Taro.hideNavigationBarLoading
+  } else {
+    Taro.showLoading({ title })
+    return Taro.hideLoading
+  }
 }
 
 export const parseTypes = (data: string): TypeItem[] => {
