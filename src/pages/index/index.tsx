@@ -1,7 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Navigator, Button, Text } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import { TypeItem, parseTypes, smartLoading } from '../../utils'
-import BQBImage from '../../components/bqb-image'
+import BQBItem from '../../components/bqb-item'
+import aboutImage from '../../assets/about.png'
 import './index.less'
 
 interface State {
@@ -68,6 +69,12 @@ export default class Index extends Component<Props, State> {
     }
   }
 
+  handleNavigate = (url?: string) => {
+    if (url) {
+      Taro.navigateTo({ url })
+    }
+  }
+
   componentDidMount() {
     this.fetchTypes()
   }
@@ -101,17 +108,21 @@ export default class Index extends Component<Props, State> {
     return (
       <View className='list'>
         {types.map(type => (
-          <Navigator className="item type-item" key={type.imgSrc} url={type.link}>
-            <Text className="type-num">{type.num}张</Text>
-            <BQBImage src={type.imgSrc} />
-            <Text className="item-name">{type.name || '未命名'}</Text>
-          </Navigator>
+          <BQBItem
+            custom-class="type-item"
+            key={type.imgSrc}
+            name={type.name}
+            src={type.imgSrc}
+            num={type.imgNum}
+            onClick={() => this.handleNavigate(type.link)}
+          />
         ))}
         {loaded && (
-          <Navigator className="item" url="/pages/about/index">
-            <Text className="about-icon">关于</Text>
-            <Text className="item-name">关于</Text>
-          </Navigator>
+          <BQBItem
+            src={aboutImage}
+            name="关于"
+            onClick={() => this.handleNavigate('/pages/about/index')}
+          />
         )}
         <Button className="flat-btn contact-btn" open-type="contact">+</Button>
       </View>

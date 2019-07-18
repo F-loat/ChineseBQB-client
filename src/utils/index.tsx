@@ -1,15 +1,15 @@
 import Taro from '@tarojs/taro'
 
 export interface TypeItem {
-  num: number,
-  name?: string,
-  link?: string,
-  imgSrc?: string,
+  name: string,
+  link: string,
+  imgNum: number,
+  imgSrc: string
 }
 
 export interface ImageItem {
   src: string,
-  name?: string,
+  name: string,
 }
 
 export const smartLoading = (title: string, cached?: boolean): Function => {
@@ -36,7 +36,12 @@ export const parseTypes = (data: string): TypeItem[] => {
       const matchInfos = item.match(infoMatchReg)
 
       if (!matchInfos) {
-        return { num: 0 }
+        return {
+          name: '未命名',
+          link: '',
+          imgNum: 0,
+          imgSrc: ''
+        }
       }
 
       const typeFullName = matchInfos[1]
@@ -45,14 +50,14 @@ export const parseTypes = (data: string): TypeItem[] => {
       const typeNum = Number(matchInfos[3])
 
       return {
-        num: typeNum,
         name: typeName,
         link: `/pages/list/index?name=${typeFullName}&title=${typeName}`,
-        imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`
+        imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`,
+        imgNum: typeNum
       }
     })
-    .filter(item => !!item.num)
-    .sort((item, nextItem) => (nextItem.num - item.num))
+    .filter(item => !!item.imgNum)
+    .sort((item, nextItem) => (nextItem.imgNum - item.imgNum))
 
   return types
 }
@@ -71,7 +76,7 @@ export const parseImages = (data: string): ImageItem[] => {
       const matchInfos = item.match(infoMatchReg)
 
       if (!matchInfos) {
-        return { src: '' }
+        return { src: '', name: '未命名' }
       }
 
       return {

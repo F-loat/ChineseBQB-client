@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import { ImageItem, parseImages, smartLoading } from '../../utils'
-import BQBImage from '../../components/bqb-image'
+import BQBItem from '../../components/bqb-item'
 import './index.less'
 
 interface State {
@@ -127,13 +127,14 @@ export default class Index extends Component<Props, State> {
 
     return (
       <View className='list'>
-        {images.map(img => (<View className="item" key={img.src}>
-          <BQBImage
+        {images.map(img => (
+          <BQBItem
+            key={img.src}
             src={img.src}
+            name={img.name}
             onClick={() => this.handlePreview(img.src)}
           />
-          <Text className="item-name">{img.name}</Text>
-        </View>))}
+        ))}
         <Button
           className="flat-btn random-btn"
           onClick={() => this.randomImages()}
