@@ -109,7 +109,7 @@ export default class Index extends Component<Props, State> {
       <View className='list'>
         {types.map(type => (
           <BQBItem
-            custom-class="type-item"
+            bqb-custom-class="bqb-custom-class"
             key={type.imgSrc}
             name={type.name}
             src={type.imgSrc}

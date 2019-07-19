@@ -13,7 +13,7 @@ export interface ImageItem {
 }
 
 export const smartLoading = (title: string, cached?: boolean): Function => {
-  if (cached) {
+  if (cached && process.env.TARO_ENV === 'weapp') {
     Taro.showNavigationBarLoading()
     return Taro.hideNavigationBarLoading
   } else {

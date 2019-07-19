@@ -14,13 +14,13 @@ export default class Index extends Component<Props> {
     onClick: () => {}
   }
 
-  static externalClasses = ['custom-class']
+  static externalClasses = ['bqb-custom-class']
 
   render() {
     const { num, src, name, onClick } = this.props
 
     return (
-      <View className="bqb-item custom-class" onClick={onClick}>
+      <View className="bqb-item bqb-custom-class" onClick={onClick}>
         {num && <Text className="bqb-num">{num}张</Text>}
         {src ? (
           <Image
