@@ -13,7 +13,7 @@ export interface ImageItem {
 }
 
 const getImageSrc = (type: string, img: string) => {
-  return `https://gitcdn.link/repo/zhaoolee/ChineseBQB/master/${type}/${img}`
+  return `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${type}/${img}`
 }
 
 export const smartLoading = (title: string, cached?: boolean): Function => {
