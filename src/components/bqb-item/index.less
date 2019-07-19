@@ -1,5 +1,6 @@
 .bqb-item {
   width: 345px;
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   text-align: center;
@@ -27,6 +28,18 @@
   background-color: #eee;
   box-shadow: 0 0 10rpx rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  opacity: 1;
+  transition: opacity .5s;
+  &.hide {
+    opacity: 0;
+  }
+}
+
+.bqb-load {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .bqb-name {
