@@ -1,7 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { Image, View, Text } from '@tarojs/components'
-import errorImage from '../../assets/error.png'
-import loadingImage from '../../assets/loading.svg'
+import errorImage from '../../assets/error.jpg'
 import './index.less'
 
 interface Props {
@@ -49,10 +48,7 @@ export default class Index extends Component<Props, State> {
           onLoad={() => this.handleImageLoad()}
           onError={() => this.handleIamgeError()}
         />
-        {isLoad ? null : (<Image
-          className="bqb-image bqb-load"
-          src={loadingImage}
-        />)}
+        {isLoad ? null : (<View className="bqb-image bqb-load" />)}
         {num && <Text className="bqb-num">{num}张</Text>}
         <Text className="bqb-name">{name}</Text>
       </View>

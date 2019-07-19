@@ -2,7 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { TypeItem, parseTypes, smartLoading } from '../../utils'
 import BQBItem from '../../components/bqb-item'
-import aboutImage from '../../assets/about.png'
+import aboutImage from '../../assets/about.jpg'
 import './index.less'
 
 interface State {
