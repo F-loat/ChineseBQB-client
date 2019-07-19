@@ -12,6 +12,10 @@ export interface ImageItem {
   name: string,
 }
 
+const getImageSrc = (type: string, img: string) => {
+  return `https://gitcdn.link/repo/zhaoolee/ChineseBQB/master/${type}/${img}`
+}
+
 export const smartLoading = (title: string, cached?: boolean): Function => {
   if (cached && process.env.TARO_ENV === 'weapp') {
     Taro.showNavigationBarLoading()
@@ -44,15 +48,15 @@ export const parseTypes = (data: string): TypeItem[] => {
         }
       }
 
-      const typeFullName = matchInfos[1]
-      const typeName = typeFullName.replace(/^(\w)*/, '').replace(/BQB$/, '')
+      const typeName = matchInfos[1]
+      const typeShortName = typeName.replace(/^(\w)*/, '').replace(/BQB$/, '')
       const imgName = matchInfos[2]
       const typeNum = Number(matchInfos[3])
 
       return {
-        name: typeName,
-        link: `/pages/list/index?name=${typeFullName}&title=${typeName}`,
-        imgSrc: `https://raw.githubusercontent.com/zhaoolee/ChineseBQB/master/${typeFullName}/${imgName}`,
+        name: typeShortName,
+        link: `/pages/list/index?name=${typeName}&title=${typeShortName}`,
+        imgSrc: getImageSrc(typeName, imgName),
         imgNum: typeNum
       }
     })
@@ -70,7 +74,7 @@ export const parseImages = (data: string): ImageItem[] => {
     return []
   }
 
-  const infoMatchReg = /\!\[(.*master\/.*\/(.*))\]/
+  const infoMatchReg = /.*master\/(.*)\/(.*)\]/
   const images = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
@@ -79,9 +83,12 @@ export const parseImages = (data: string): ImageItem[] => {
         return { src: '', name: '未命名' }
       }
 
+      const typeName = matchInfos[1]
+      const imgName = matchInfos[2]
+
       return {
-        src: matchInfos[1],
-        name: matchInfos[2].replace(/\..*$/, '')
+        src: getImageSrc(typeName, imgName),
+        name: imgName.replace(/\..*$/, '')
       }
     })
     .filter(item => !!item.src)
