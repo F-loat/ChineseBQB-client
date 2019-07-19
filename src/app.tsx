@@ -37,18 +37,18 @@ class App extends Component {
     const updateManager = Taro.getUpdateManager()
 
     updateManager.onUpdateReady(async () => {
-      Taro.clearStorage()
-
       const { confirm } = await Taro.showModal({
         title: '更新提示',
         content: '新版本已经准备好，是否重启应用？'
       })
 
       if (confirm) updateManager.applyUpdate()
+
+      Taro.clearStorage()
     })
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'weapp') {
       this.checkUpdate()
     }
