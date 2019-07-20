@@ -34,7 +34,7 @@ export const parseTypes = (data: string): TypeItem[] => {
     return []
   }
 
-  const infoMatchReg = /.*master\/(.*)\/(.*)'.*已收录(\d*)张/
+  const infoMatchReg = /.*master\/(.*?)\/(.*?) .*已收录(\d*)张/
   const types: TypeItem[] = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
@@ -67,7 +67,7 @@ export const parseTypes = (data: string): TypeItem[] => {
 }
 
 export const parseImages = (data: string): ImageItem[] => {
-  const tagMatchReg = /\!\[.*\]/g
+  const tagMatchReg = /\[.*?\]/g
   const imgTags = data && data.match(tagMatchReg)
 
   if (!imgTags) {

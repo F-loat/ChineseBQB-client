@@ -41,7 +41,7 @@ export default class Index extends Component<Props, State> {
     const hideLoading = smartLoading('加载中', !!cachedData)
 
     const { data } = await Taro.request({
-      url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${name}/index.md`,
+      url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/source/_posts/${name}.md`,
       dataType: 'text',
       responseType: 'text'
     })
