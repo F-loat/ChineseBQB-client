@@ -15,7 +15,7 @@ interface State {
   isError: boolean
 }
 
-export default class Index extends Component<Props, State> {
+export default class BQBItem extends Component<Props, State> {
   static defaultProps = {
     onClick: () => {}
   }
@@ -32,6 +32,15 @@ export default class Index extends Component<Props, State> {
     this.setState({
       isError: true
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.src !== this.props.src) {
+      this.setState({
+        isLoad: false,
+        isError: false
+      })
+    }
   }
 
   render() {
