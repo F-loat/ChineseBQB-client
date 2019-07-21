@@ -57,7 +57,7 @@ export default class BQBItem extends Component<Props, State> {
           onLoad={() => this.handleImageLoad()}
           onError={() => this.handleIamgeError()}
         />
-        {isLoad ? null : (<View className="bqb-image bqb-load" />)}
+        {isLoad ? null : (<View className="bqb-image bqb-loading" />)}
         {num && <Text className="bqb-num">{num}张</Text>}
         <Text className="bqb-name">{name}</Text>
       </View>

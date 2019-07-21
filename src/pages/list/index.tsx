@@ -2,11 +2,13 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { ImageItem, parseImages, smartLoading } from '../../utils'
 import BQBItem from '../../components/bqb-item'
+import ErrTips from '../../components/err-tips'
 import './index.less'
 
 interface State {
   images: ImageItem[],
-  urls: string[]
+  urls: string[],
+  isLoad: boolean
 }
 
 interface Props { }
@@ -16,7 +18,8 @@ export default class Index extends Component<Props, State> {
     super(props)
     this.state = {
       images: [],
-      urls: []
+      urls: [],
+      isLoad: false
     }
   }
 
@@ -64,7 +67,8 @@ export default class Index extends Component<Props, State> {
     if (reload) {
       this.setState({
         images: newImages,
-        urls: newUrls
+        urls: newUrls,
+        isLoad: newImages.length <= 20
       })
     } else {
       this.setState({
@@ -123,7 +127,11 @@ export default class Index extends Component<Props, State> {
   }
 
   render() {
-    const { images = [] } = this.state
+    const { images = [], isLoad } = this.state
+
+    if (!images.length) {
+      return  isLoad ? <ErrTips /> : <View />
+    }
 
     return (
       <View className='list'>

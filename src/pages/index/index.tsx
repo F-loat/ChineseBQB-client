@@ -2,12 +2,13 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { TypeItem, parseTypes, smartLoading } from '../../utils'
 import BQBItem from '../../components/bqb-item'
+import ErrTips from '../../components/err-tips'
 import aboutImage from '../../assets/about.jpg'
 import './index.less'
 
 interface State {
   types: TypeItem[],
-  loaded: boolean
+  isLoad: boolean
 }
 
 interface Props { }
@@ -17,7 +18,7 @@ export default class Index extends Component<Props, State> {
     super(props)
     this.state = {
       types: [],
-      loaded: false
+      isLoad: false
     }
   }
 
@@ -60,7 +61,7 @@ export default class Index extends Component<Props, State> {
     if (reload) {
       this.setState({
         types: newTypes,
-        loaded: false
+        isLoad: newTypes.length <= 20
       })
     } else {
       this.setState({
@@ -88,7 +89,7 @@ export default class Index extends Component<Props, State> {
     if (this.types.length) {
       this.showMoreTypes()
     } else {
-      this.setState({ loaded: true })
+      this.setState({ isLoad: true })
     }
   }
 
@@ -99,10 +100,10 @@ export default class Index extends Component<Props, State> {
   }
 
   render() {
-    const { types = [], loaded } = this.state
+    const { types = [], isLoad } = this.state
 
     if (!types.length) {
-      return <View />
+      return isLoad ? <ErrTips /> : <View />
     }
 
     return (
@@ -116,7 +117,7 @@ export default class Index extends Component<Props, State> {
             onClick={() => this.handleNavigate(type.link)}
           />
         ))}
-        {loaded && (
+        {isLoad && (
           <BQBItem
             src={aboutImage}
             name="关于"
