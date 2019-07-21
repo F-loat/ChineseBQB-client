@@ -61,7 +61,7 @@ export default class Index extends Component<Props, State> {
     if (reload) {
       this.setState({
         types: newTypes,
-        isLoad: newTypes.length <= 20
+        isLoad: !this.types.length
       })
     } else {
       this.setState({

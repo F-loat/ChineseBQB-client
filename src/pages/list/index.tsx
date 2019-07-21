@@ -68,7 +68,7 @@ export default class Index extends Component<Props, State> {
       this.setState({
         images: newImages,
         urls: newUrls,
-        isLoad: newImages.length <= 20
+        isLoad: !this.images.length
       })
     } else {
       this.setState({
