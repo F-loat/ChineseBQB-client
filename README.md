@@ -4,7 +4,7 @@
 
 ## 预览
 
-* 扫描下方小程序码
+* 扫描下方[小程序码](#截图)
 
 * 访问网页版 [Demo](https://f-loat.github.io/ChineseBQB-client)
 
