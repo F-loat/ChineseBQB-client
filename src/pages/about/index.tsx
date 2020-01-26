@@ -9,7 +9,7 @@ interface State {
 
 interface Props { }
 
-export default class Index extends Component<Props, State> {
+export default class About extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
