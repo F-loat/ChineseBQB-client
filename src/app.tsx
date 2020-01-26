@@ -1,16 +1,18 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import '@tarojs/async-await'
 import Index from './pages/index'
 
 import './app.less'
 
-// 如果需要在 h5 环境中开启 React Devtools
-// 取消以下注释：
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
 
 class App extends Component {
+  componentDidMount() {
+    if (process.env.TARO_ENV === 'weapp') {
+      this.checkUpdate()
+    }
+  }
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -46,12 +48,6 @@ class App extends Component {
 
       Taro.clearStorage()
     })
-  }
-
-  componentDidMount() {
-    if (process.env.TARO_ENV === 'weapp') {
-      this.checkUpdate()
-    }
   }
 
   // 在 App 类中的 render() 函数没有实际作用
