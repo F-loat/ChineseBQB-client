@@ -1,7 +1,7 @@
 {
   "extends": ["taro"],
   "rules": {
-    "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],
+    "no-unused-vars": ["@typescript-eslint/no-unused-vars", { "varsIgnorePattern": "Taro" }],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".tsx"] }],
     "jsx-quotes": ["error", "prefer-double"]
   },

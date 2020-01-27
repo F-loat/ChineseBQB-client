@@ -8,6 +8,7 @@ declare module "*.less";
 declare module "*.scss";
 declare module "*.sass";
 declare module "*.styl";
+declare module "taro-ui";
 
 // @ts-ignore
 // eslint-disable-next-line no-unused-vars

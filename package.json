@@ -44,14 +44,15 @@
     "babel-runtime": "^6.26.0",
     "marked": "^0.7.0",
     "nerv-devtools": "^1.5.5",
-    "nervjs": "^1.5.5"
+    "nervjs": "^1.5.5",
+    "taro-ui": "^2.2.4"
   },
   "devDependencies": {
     "@tarojs/mini-runner": "2.0.0",
     "@tarojs/webpack-runner": "2.0.2",
     "@types/react": "^16.4.6",
     "@types/webpack-env": "^1.13.6",
-    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.13.0",
     "babel-eslint": "^8.2.3",
     "babel-plugin-transform-class-properties": "^6.24.1",

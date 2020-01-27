@@ -1,6 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { ImageItem, parseImages, smartLoading } from '../../utils'
+import { ImageItem, parseImages, smartLoading, getSetting } from '../../utils'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import './index.less'
@@ -8,6 +8,8 @@ import './index.less'
 interface State {
   images: ImageItem[],
   urls: string[],
+  perLineBQB: number,
+  showBQBTitle: boolean,
   isLoad: boolean
 }
 
@@ -19,6 +21,8 @@ export default class List extends Component<Props, State> {
     this.state = {
       images: [],
       urls: [],
+      perLineBQB: 4,
+      showBQBTitle: true,
       isLoad: false
     }
   }
@@ -27,7 +31,7 @@ export default class List extends Component<Props, State> {
   urls: string[]
 
   config: Config = {
-    navigationBarTitleText: '中国表情包',
+    navigationBarTitleText: '开源表情包',
     enablePullDownRefresh: true
   }
 
@@ -45,7 +49,6 @@ export default class List extends Component<Props, State> {
 
     const { data } = await Taro.request({
       url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/source/_posts/${name}.md`,
-      dataType: 'text',
       responseType: 'text'
     })
 
@@ -61,8 +64,8 @@ export default class List extends Component<Props, State> {
   showMoreImages = (reload?: boolean) => {
     const { images, urls } = this.state
 
-    const newImages = this.images.splice(0, 20)
-    const newUrls = this.urls.splice(0, 20)
+    const newImages = this.images.splice(0, 30)
+    const newUrls = this.urls.splice(0, 30)
 
     if (reload) {
       this.setState({
@@ -97,6 +100,11 @@ export default class List extends Component<Props, State> {
     Taro.showToast({ title: '表情包已随机排序', icon: 'none' })
   }
 
+  updateSetting = () => {
+    const setting = getSetting()
+    this.setState(setting)
+  }
+
   componentDidMount() {
     const { title } = this.$router.params
 
@@ -107,6 +115,10 @@ export default class List extends Component<Props, State> {
     }
 
     this.fetchImages()
+  }
+
+  componentDidShow() {
+    this.updateSetting()
   }
 
   async onPullDownRefresh() {
@@ -127,7 +139,8 @@ export default class List extends Component<Props, State> {
   }
 
   render() {
-    const { images = [], isLoad } = this.state
+    const { images = [], isLoad, perLineBQB, showBQBTitle } = this.state
+    const bqbClassName = `bqb-item-${perLineBQB}`
 
     if (!images.length) {
       return  isLoad ? <ErrTips /> : <View />
@@ -140,6 +153,8 @@ export default class List extends Component<Props, State> {
             key={img.src}
             src={img.src}
             name={img.name}
+            showTitle={showBQBTitle}
+            bqb-custom-class={bqbClassName}
             onClick={() => this.handlePreview(img.src)}
           />
         ))}

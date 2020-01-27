@@ -1,13 +1,16 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { TypeItem, parseTypes, smartLoading } from '../../utils'
+import { TypeItem, parseTypes, smartLoading, getSetting } from '../../utils'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import aboutImage from '../../assets/about.jpg'
+import settingImage from '../../assets/setting.jpg'
 import './index.less'
 
 interface State {
   types: TypeItem[],
+  perLineBQB: number,
+  showBQBTitle: boolean,
   isLoad: boolean
 }
 
@@ -18,6 +21,8 @@ export default class Index extends Component<Props, State> {
     super(props)
     this.state = {
       types: [],
+      perLineBQB: 4,
+      showBQBTitle: true,
       isLoad: false
     }
   }
@@ -25,7 +30,7 @@ export default class Index extends Component<Props, State> {
   types: TypeItem[]
 
   config: Config = {
-    navigationBarTitleText: '中国表情包',
+    navigationBarTitleText: '开源表情包',
     enablePullDownRefresh: true
   }
 
@@ -33,41 +38,32 @@ export default class Index extends Component<Props, State> {
     const cachedData = Taro.getStorageSync('readme')
 
     if (cachedData) {
-      this.types = parseTypes(cachedData)
-      this.showMoreTypes(true)
+      this.setState({
+        types: parseTypes(cachedData),
+        isLoad: true
+      })
     }
 
     const hideLoading = smartLoading('加载中', !!cachedData)
 
     const { data } = await Taro.request({
       url: 'https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/README.md',
-      dataType: 'text',
       responseType: 'text'
     })
 
     Taro.setStorage({ key: 'readme', data })
 
-    this.types = parseTypes(data)
-    this.showMoreTypes(true)
+    this.setState({
+      types: parseTypes(data),
+      isLoad: true
+    })
 
     hideLoading()
   }
 
-  showMoreTypes = (reload?: boolean) => {
-    const { types } = this.state
-
-    const newTypes = this.types.splice(0, 20)
-
-    if (reload) {
-      this.setState({
-        types: newTypes,
-        isLoad: !this.types.length
-      })
-    } else {
-      this.setState({
-        types: types.concat(newTypes)
-      })
-    }
+  updateSetting = () => {
+    const setting = getSetting()
+    this.setState(setting)
   }
 
   handleNavigate = (url?: string) => {
@@ -80,47 +76,57 @@ export default class Index extends Component<Props, State> {
     this.fetchTypes()
   }
 
+  componentDidShow() {
+    this.updateSetting()
+  }
+
   async onPullDownRefresh() {
     await this.fetchTypes()
     Taro.stopPullDownRefresh()
   }
 
-  onReachBottom() {
-    if (this.types.length) {
-      this.showMoreTypes()
-    } else {
-      this.setState({ isLoad: true })
-    }
-  }
-
   onShareAppMessage() {
     return {
-      title: '中国表情包'
+      title: '开源表情包'
     }
   }
 
   render() {
-    const { types = [], isLoad } = this.state
+    const { types = [], isLoad, perLineBQB, showBQBTitle } = this.state
+    const bqbClassName = `bqb-item-${perLineBQB}`
 
     if (!types.length) {
       return isLoad ? <ErrTips /> : <View />
     }
 
     return (
-      <View className='list'>
+      <View className="list">
         {types.map(type => (
           <BQBItem
             key={type.imgSrc}
             name={type.name}
             src={type.imgSrc}
             num={type.imgNum}
+            showTitle={showBQBTitle}
+            bqb-custom-class={bqbClassName}
             onClick={() => this.handleNavigate(type.link)}
           />
         ))}
         {isLoad && (
           <BQBItem
+            src={settingImage}
+            name="设置"
+            showTitle={showBQBTitle}
+            bqb-custom-class={bqbClassName}
+            onClick={() => this.handleNavigate('/pages/setting/index')}
+          />
+        )}
+        {isLoad && (
+          <BQBItem
             src={aboutImage}
             name="关于"
+            showTitle={showBQBTitle}
+            bqb-custom-class={bqbClassName}
             onClick={() => this.handleNavigate('/pages/about/index')}
           />
         )}

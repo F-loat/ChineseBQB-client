@@ -1,11 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import Index from './pages/index'
 
+import 'taro-ui/dist/style/index.scss'
 import './app.less'
 
-// if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
-//   require('nerv-devtools')
-// }
+if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
+  require('nerv-devtools')
+}
 
 class App extends Component {
   componentDidMount() {
@@ -25,11 +26,12 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/list/index',
-      'pages/about/index',
+      'pages/setting/index',
+      'pages/about/index'
     ],
     window: {
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '中国表情包',
+      navigationBarTitleText: '开源表情包',
       navigationBarTextStyle: 'black',
       backgroundTextStyle: 'dark'
     }

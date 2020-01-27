@@ -1,16 +1,50 @@
 {
-  "miniprogramRoot": "./dist",
-  "projectname": "ChineseBQB",
-  "description": "Chinese sticker pack,More joy / 中国表情包大集合,更欢乐~",
-  "appid": "wx0657341dbd373372",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "minified": false,
-    "newFeature": true,
-    "autoAudits": false,
-    "checkInvalidKey": true
-  },
-  "compileType": "miniprogram"
+	"miniprogramRoot": "dist/",
+	"projectname": "ChineseBQB",
+	"description": "Chinese sticker pack,More joy / 中国表情包大集合,更欢乐~",
+	"appid": "wx0657341dbd373372",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"checkInvalidKey": true
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/setting/index",
+					"pathName": "pages/setting/index",
+					"scene": null
+				}
+			]
+		}
+	}
 }

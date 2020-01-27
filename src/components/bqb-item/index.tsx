@@ -7,6 +7,7 @@ interface Props {
   num?: number,
   src: string,
   name?: string,
+  showTitle?: boolean,
   onClick?: any
 }
 
@@ -17,6 +18,7 @@ interface State {
 
 export default class BQBItem extends Component<Props, State> {
   static defaultProps = {
+    showTitle: true,
     onClick: () => {}
   }
 
@@ -44,22 +46,25 @@ export default class BQBItem extends Component<Props, State> {
   }
 
   render() {
-    const { num, src, name, onClick } = this.props
+    const { num, src, name, showTitle, onClick } = this.props
     const { isLoad, isError } = this.state
 
     return (
       <View className="bqb-item bqb-custom-class" onClick={onClick}>
-        <Image
-          className={`bqb-image ${isLoad ? '' : 'hide'}`}
-          mode="aspectFill"
-          lazyLoad
-          src={isError ? errorImage : src}
-          onLoad={() => this.handleImageLoad()}
-          onError={() => this.handleIamgeError()}
-        />
-        {isLoad ? null : (<View className="bqb-image bqb-loading" />)}
-        {num && <Text className="bqb-num">{num}张</Text>}
-        <Text className="bqb-name">{name}</Text>
+        <View className="bqb-image-wrap">
+          <Image
+            className={`bqb-image ${isLoad ? '' : 'hide'}`}
+            mode="aspectFill"
+            lazyLoad
+            src={isError ? errorImage : src}
+            onLoad={() => this.handleImageLoad()}
+            onError={() => this.handleIamgeError()}
+          />
+          <View className='at-icon at-icon-settings' />
+          {num && <Text className="bqb-num">{num}张</Text>}
+          {isLoad ? null : (<View className="bqb-image bqb-loading" />)}
+        </View>
+        {showTitle && <Text className="bqb-name">{name}</Text>}
       </View>
     )
   }

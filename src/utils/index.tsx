@@ -95,3 +95,13 @@ export const parseImages = (data: string): ImageItem[] => {
 
   return images
 }
+
+export const getSetting = () => {
+  const setting = Taro.getStorageSync('setting') || {}
+  const { perLineBQB, showBQBTitle } = setting
+
+  return {
+    perLineBQB: perLineBQB || 4,
+    showBQBTitle: showBQBTitle === undefined ? true : showBQBTitle
+  }
+}
