@@ -49,6 +49,7 @@ export default class List extends Component<Props, State> {
 
     const { data } = await Taro.request({
       url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/source/_posts/${name}.md`,
+      dataType: '其他',
       responseType: 'text'
     })
 

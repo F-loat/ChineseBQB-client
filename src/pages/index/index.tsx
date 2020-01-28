@@ -48,6 +48,7 @@ export default class Index extends Component<Props, State> {
 
     const { data } = await Taro.request({
       url: 'https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/README.md',
+      dataType: '其他',
       responseType: 'text'
     })
 
