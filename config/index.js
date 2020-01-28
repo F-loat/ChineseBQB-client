@@ -49,7 +49,7 @@ const config = {
     }
   },
   h5: {
-    publicPath: '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/ChineseBQB-client/' : '/',
     staticDirectory: 'static',
     esnextModules: ['taro-ui'],
     postcss: {
