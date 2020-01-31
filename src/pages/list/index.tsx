@@ -83,6 +83,26 @@ export default class List extends Component<Props, State> {
     }
   }
 
+  downloadImages = async (index: number = 0) => {
+    try {
+      const images = this.state.images.concat(this.images)
+      const { src } = images[index]
+      const nextIndex = index + 1
+
+      Taro.showLoading({ title: `保存第${nextIndex}张中...` })
+      const res: any = await Taro.downloadFile({ url: src })
+      await Taro.saveImageToPhotosAlbum({ filePath: res.tempFilePath })
+
+      if (nextIndex < images.length) {
+        this.downloadImages(nextIndex)
+      } else {
+        Taro.showToast({ title: `保存完毕！`, duration: 5000 })
+      }
+    } catch (err) {
+      Taro.showToast({ title: '请授予保存图片权限', icon: 'none' })
+    }
+  }
+
   handlePreview = (src) => {
     Taro.previewImage({
       urls: this.state.urls,
@@ -162,8 +182,11 @@ export default class List extends Component<Props, State> {
         ))}
         <Button
           className="flat-btn random-btn"
-          onClick={() => this.randomImages()}
-        >≈</Button>
+          onClick={() => this.downloadImages()}
+          onLongPress={() => this.randomImages()}
+        >
+          <View className='at-icon at-icon-download' />
+        </Button>
       </View>
     )
   }
