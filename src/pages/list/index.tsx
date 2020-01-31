@@ -22,7 +22,7 @@ export default class List extends Component<Props, State> {
       images: [],
       urls: [],
       perLineBQB: 4,
-      showBQBTitle: true,
+      showBQBTitle: false,
       isLoad: false
     }
   }

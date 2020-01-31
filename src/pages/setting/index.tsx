@@ -16,7 +16,7 @@ export default class Setting extends Component<Props, State> {
     super(props)
     this.state = {
       perLineBQB: 4,
-      showBQBTitle: true
+      showBQBTitle: false
     }
   }
 

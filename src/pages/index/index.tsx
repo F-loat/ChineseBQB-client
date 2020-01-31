@@ -22,7 +22,7 @@ export default class Index extends Component<Props, State> {
     this.state = {
       types: [],
       perLineBQB: 4,
-      showBQBTitle: true,
+      showBQBTitle: false,
       isLoad: false
     }
   }
