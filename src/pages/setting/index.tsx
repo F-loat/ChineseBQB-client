@@ -5,8 +5,10 @@ import { getSetting } from '../../utils'
 import './index.less'
 
 interface State {
-  perLineBQB: number,
-  showBQBTitle: boolean
+  setting: {
+    perLineBQB: number,
+    showBQBTitle: boolean
+  }
 }
 
 interface Props { }
@@ -15,8 +17,7 @@ export default class Setting extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-      perLineBQB: 4,
-      showBQBTitle: false
+      setting: getSetting()
     }
   }
 
@@ -26,20 +27,18 @@ export default class Setting extends Component<Props, State> {
 
   updateSetting = (write?: boolean) => {
     if (write) {
-      const { perLineBQB, showBQBTitle } = this.state
+      const { perLineBQB, showBQBTitle } = this.state.setting
       Taro.setStorageSync('setting', { perLineBQB, showBQBTitle })
     } else {
-      const setting = getSetting()
-      this.setState(setting)
+      this.setState({ setting: getSetting() })
     }
   }
 
-  handleLineChange = ({ value: perLineBQB }) => {
-    this.setState({ perLineBQB }, () => this.updateSetting(true))
-  }
-
-  handleTitelChange = (showBQBTitle) => {
-    this.setState({ showBQBTitle }, () => this.updateSetting(true))
+  handleSettingChange = (key, value) => {
+    const { setting } = this.state
+    this.setState({
+      setting: { ...setting, [key]: value }
+    }, () => this.updateSetting(true))
   }
 
   componentDidShow() {
@@ -47,7 +46,7 @@ export default class Setting extends Component<Props, State> {
   }
 
   render() {
-    const { perLineBQB, showBQBTitle } = this.state
+    const { perLineBQB, showBQBTitle } = this.state.setting
 
     return (
       <View className="setting">
@@ -60,14 +59,14 @@ export default class Setting extends Component<Props, State> {
               activeColor="#000"
               showValue
               value={perLineBQB}
-              onChange={this.handleLineChange}
+              onChange={({ value }) => this.handleSettingChange('perLineBQB', value)}
             />
           </View>
           <AtSwitch
             title="展示图片标题"
             color="#000"
             checked={showBQBTitle}
-            onChange={this.handleTitelChange}
+            onChange={(value) => this.handleSettingChange('showBQBTitle', value)}
           />
         </AtForm>
       </View>

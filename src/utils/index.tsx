@@ -102,6 +102,6 @@ export const getSetting = () => {
 
   return {
     perLineBQB: perLineBQB || 4,
-    showBQBTitle: showBQBTitle === undefined ? true : showBQBTitle
+    showBQBTitle: showBQBTitle === undefined ? false : showBQBTitle
   }
 }

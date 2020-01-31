@@ -9,8 +9,10 @@ import './index.less'
 
 interface State {
   types: TypeItem[],
-  perLineBQB: number,
-  showBQBTitle: boolean,
+  setting: {
+    perLineBQB: number,
+    showBQBTitle: boolean,
+  },
   isLoad: boolean
 }
 
@@ -21,8 +23,7 @@ export default class Index extends Component<Props, State> {
     super(props)
     this.state = {
       types: [],
-      perLineBQB: 4,
-      showBQBTitle: false,
+      setting: getSetting(),
       isLoad: false
     }
   }
@@ -63,8 +64,7 @@ export default class Index extends Component<Props, State> {
   }
 
   updateSetting = () => {
-    const setting = getSetting()
-    this.setState(setting)
+    this.setState({ setting: getSetting() })
   }
 
   handleNavigate = (url?: string) => {
@@ -93,7 +93,8 @@ export default class Index extends Component<Props, State> {
   }
 
   render() {
-    const { types = [], isLoad, perLineBQB, showBQBTitle } = this.state
+    const { types = [], isLoad, setting } = this.state
+    const { perLineBQB, showBQBTitle } = setting
     const bqbClassName = `bqb-item-${perLineBQB}`
 
     if (!types.length) {

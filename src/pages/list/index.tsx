@@ -8,8 +8,10 @@ import './index.less'
 interface State {
   images: ImageItem[],
   urls: string[],
-  perLineBQB: number,
-  showBQBTitle: boolean,
+  setting: {
+    perLineBQB: number,
+    showBQBTitle: boolean,
+  },
   isLoad: boolean
 }
 
@@ -21,8 +23,7 @@ export default class List extends Component<Props, State> {
     this.state = {
       images: [],
       urls: [],
-      perLineBQB: 4,
-      showBQBTitle: false,
+      setting: getSetting(),
       isLoad: false
     }
   }
@@ -102,8 +103,7 @@ export default class List extends Component<Props, State> {
   }
 
   updateSetting = () => {
-    const setting = getSetting()
-    this.setState(setting)
+    this.setState({ setting: getSetting() })
   }
 
   componentDidMount() {
@@ -140,7 +140,8 @@ export default class List extends Component<Props, State> {
   }
 
   render() {
-    const { images = [], isLoad, perLineBQB, showBQBTitle } = this.state
+    const { images = [], isLoad, setting } = this.state
+    const { perLineBQB, showBQBTitle } = setting
     const bqbClassName = `bqb-item-${perLineBQB}`
 
     if (!images.length) {
