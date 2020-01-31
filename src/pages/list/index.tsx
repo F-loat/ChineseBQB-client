@@ -103,6 +103,14 @@ export default class List extends Component<Props, State> {
     }
   }
 
+  handleDownload = () => {
+    Taro.showModal({
+      title: '批量下载',
+      content: '是否批量下载本类型全部表情包',
+      success: ({ confirm }) => confirm && this.downloadImages(0)
+    })
+  }
+
   handlePreview = (src) => {
     Taro.previewImage({
       urls: this.state.urls,
@@ -182,7 +190,7 @@ export default class List extends Component<Props, State> {
         ))}
         <Button
           className="flat-btn random-btn"
-          onClick={() => this.downloadImages()}
+          onClick={() => this.handleDownload()}
           onLongPress={() => this.randomImages()}
         >
           <View className='at-icon at-icon-download' />
