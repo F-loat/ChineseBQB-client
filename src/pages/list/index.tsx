@@ -3,6 +3,7 @@ import { View, Button } from '@tarojs/components'
 import { ImageItem, parseImages, smartLoading, getSetting } from '../../utils'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
+import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 interface State {
@@ -163,7 +164,8 @@ export default class List extends Component<Props, State> {
 
   onShareAppMessage() {
     return {
-      title: this.$router.params.title
+      title: `开源表情包 - ${this.$router.params.title}`,
+      imageUrl: bannerImage
     }
   }
 

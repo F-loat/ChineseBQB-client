@@ -5,6 +5,7 @@ import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import aboutImage from '../../assets/about.jpg'
 import settingImage from '../../assets/setting.jpg'
+import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 interface State {
@@ -88,7 +89,8 @@ export default class Index extends Component<Props, State> {
 
   onShareAppMessage() {
     return {
-      title: '开源表情包'
+      title: '开源表情包',
+      imageUrl: bannerImage
     }
   }
 
