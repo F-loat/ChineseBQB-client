@@ -13,6 +13,7 @@ interface State {
     perLineBQB: number,
     showBQBTitle: boolean,
   },
+  perLoadNum: number,
   isLoad: boolean
 }
 
@@ -25,6 +26,7 @@ export default class List extends Component<Props, State> {
       images: [],
       urls: [],
       setting: getSetting(),
+      perLoadNum: 30,
       isLoad: false
     }
   }
@@ -65,10 +67,9 @@ export default class List extends Component<Props, State> {
   }
 
   showMoreImages = (reload?: boolean) => {
-    const { images, urls } = this.state
-
-    const newImages = this.images.splice(0, 30)
-    const newUrls = this.urls.splice(0, 30)
+    const { images, urls, perLoadNum } = this.state
+    const newImages = this.images.splice(0, perLoadNum)
+    const newUrls = this.urls.splice(0, perLoadNum)
 
     if (reload) {
       this.setState({
@@ -132,7 +133,12 @@ export default class List extends Component<Props, State> {
   }
 
   updateSetting = () => {
-    this.setState({ setting: getSetting() })
+    const setting = getSetting()
+    const { perLineBQB } = setting
+    const { windowHeight } = Taro.getSystemInfoSync()
+    const perLoadNum = Math.ceil(windowHeight * perLineBQB / 375) * perLineBQB
+
+    this.setState({ setting, perLoadNum  })
   }
 
   componentDidMount() {
