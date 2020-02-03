@@ -5,7 +5,7 @@ import './index.less'
 
 interface Props {
   num?: number,
-  src: string,
+  src?: string,
   name?: string,
   showTitle?: boolean,
   onClick?: any
@@ -49,6 +49,14 @@ export default class BQBItem extends Component<Props, State> {
     const { num, src, name, showTitle, onClick } = this.props
     const { isLoad, isError } = this.state
 
+    if (!src) {
+      return (
+        <View className="bqb-item bqb-custom-class" onClick={onClick}>
+          <View className="bqb-text">{name}</View>
+        </View>
+      )
+    }
+
     return (
       <View className="bqb-item bqb-custom-class" onClick={onClick}>
         <View className="bqb-image-wrap">
@@ -57,12 +65,11 @@ export default class BQBItem extends Component<Props, State> {
             mode="aspectFill"
             lazyLoad
             src={isError ? errorImage : src}
-            onLoad={() => this.handleImageLoad()}
-            onError={() => this.handleIamgeError()}
+            onLoad={this.handleImageLoad}
+            onError={this.handleIamgeError}
           />
-          <View className='at-icon at-icon-settings' />
+          {isLoad ? null : <View className="bqb-image bqb-loading" />}
           {num && <Text className="bqb-num">{num}张</Text>}
-          {isLoad ? null : (<View className="bqb-image bqb-loading" />)}
         </View>
         {showTitle && <Text className="bqb-name">{name}</Text>}
       </View>
