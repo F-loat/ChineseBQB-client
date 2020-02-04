@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { TypeItem, parseTypes, smartLoading, getSetting } from '../../utils'
+import { request, TypeItem, parseTypes, getSetting, Setting } from '../../utils'
+import { RESPONSE_TYPE, DATA_TYPE, INDEX_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import aboutImage from '../../assets/about.jpg'
@@ -10,16 +11,13 @@ import './index.less'
 
 interface State {
   types: TypeItem[],
-  setting: {
-    perLineBQB: number,
-    showBQBTitle: boolean,
-  },
+  setting: Setting,
   isLoad: boolean
 }
 
 interface Props { }
 
-export default class Index extends Component<Props, State> {
+export default class IndexPage extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -37,35 +35,36 @@ export default class Index extends Component<Props, State> {
   }
 
   fetchTypes = async () => {
-    const cachedData = Taro.getStorageSync('readme')
+    const { repository } = this.state.setting
 
-    if (cachedData) {
-      this.setState({
-        types: parseTypes(cachedData),
-        isLoad: true
-      })
-    }
-
-    const hideLoading = smartLoading('加载中', !!cachedData)
-
-    const { data } = await Taro.request({
-      url: 'https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/README.md',
-      dataType: '其他',
-      responseType: 'text'
+    const data = await request({
+      url: INDEX_API_URL[repository],
+      dataType: DATA_TYPE[repository],
+      responseType: RESPONSE_TYPE[repository]
     })
-
-    Taro.setStorage({ key: 'readme', data })
 
     this.setState({
-      types: parseTypes(data),
+      types: parseTypes(data, repository),
       isLoad: true
     })
-
-    hideLoading()
   }
 
   updateSetting = () => {
-    this.setState({ setting: getSetting() })
+    const { setting } = this.state
+    const { repository } = this.$router.params
+
+    const newSetting = getSetting()
+
+    if (repository) {
+      Taro.setStorageSync('setting', { ...newSetting, repository })
+      Taro.reLaunch({ url: '/pages/index/index' })
+    }
+
+    this.setState({ setting: newSetting }, () => {
+      if (setting.repository !== newSetting.repository) {
+        Taro.reLaunch({ url: '/pages/index/index' })
+      }
+    })
   }
 
   handleNavigate = (url?: string) => {
@@ -88,9 +87,12 @@ export default class Index extends Component<Props, State> {
   }
 
   onShareAppMessage() {
+    const { repository } = this.state.setting
+
     return {
       title: '开源表情包',
-      imageUrl: bannerImage
+      imageUrl: bannerImage,
+      path: `/pages/index/index?repository=${repository}`
     }
   }
 

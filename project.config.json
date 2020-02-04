@@ -42,6 +42,14 @@
 					"id": -1,
 					"name": "pages/setting/index",
 					"pathName": "pages/setting/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "pages/index/index",
+					"pathName": "pages/index/index",
+					"query": "repository=getActivity/EmojiPackage",
 					"scene": null
 				}
 			]

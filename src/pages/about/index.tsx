@@ -1,19 +1,23 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import marked from 'marked'
 import { View, Button, RichText } from '@tarojs/components'
+import { request, getSetting, Setting } from '../../utils'
+import { ABOUT_API_URL } from '../../enums'
 import './index.less'
 
 interface State {
-  readme: string
+  readme: string,
+  setting: Setting
 }
 
 interface Props { }
 
-export default class About extends Component<Props, State> {
+export default class AboutPage extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-      readme: ''
+      readme: '',
+      setting: getSetting()
     }
   }
 
@@ -35,13 +39,35 @@ export default class About extends Component<Props, State> {
     })
   }
 
+  async fetchAbout() {
+    const { repository } = this.state.setting
+
+    const data = await request({
+      url: ABOUT_API_URL[repository],
+      dataType: '其他',
+      responseType: 'text'
+    })
+
+    const readme = marked(data)
+      .replace(/raw\.githubusercontent\.com/g, 'proxy.youngon.com.cn/github/raw')
+      .replace(/<img/g, '<img style="max-width: 100%"')
+
+    this.setState({ readme })
+  }
+
+  updateSetting = () => {
+    const setting = getSetting()
+    this.setState({ setting }, () => {
+      this.fetchAbout()
+    })
+  }
+
   componentDidMount() {
-    Taro
-      .getStorage({ key: 'readme' })
-      .then((res) => {
-        const readme = marked(res.data).replace(/<img/g, '<img style="max-width: 100%"')
-        this.setState({ readme })
-      })
+    this.fetchAbout()
+  }
+
+  componentDidShow() {
+    this.updateSetting()
   }
 
   render() {

@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { ImageItem, parseImages, smartLoading, getSetting } from '../../utils'
+import { request, ImageItem, parseImages, getSetting, Setting } from '../../utils'
+import { RESPONSE_TYPE, DATA_TYPE, LIST_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import bannerImage from '../../assets/banner.png'
@@ -9,17 +10,14 @@ import './index.less'
 interface State {
   images: ImageItem[],
   urls: string[],
-  setting: {
-    perLineBQB: number,
-    showBQBTitle: boolean,
-  },
+  setting: Setting,
   perLoadNum: number,
   isLoad: boolean
 }
 
 interface Props { }
 
-export default class List extends Component<Props, State> {
+export default class ListPage extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,29 +39,17 @@ export default class List extends Component<Props, State> {
 
   fetchImages = async () => {
     const { name } = this.$router.params
-    const cachedData = Taro.getStorageSync(name)
+    const { repository } = this.state.setting
 
-    if (cachedData) {
-      this.images = parseImages(cachedData)
-      this.urls = this.images.map(img => img.src)
-      this.showMoreImages(true)
-    }
-
-    const hideLoading = smartLoading('加载中', !!cachedData)
-
-    const { data } = await Taro.request({
-      url: `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/source/_posts/${name}.md`,
-      dataType: '其他',
-      responseType: 'text'
+    const data = await request({
+      url: LIST_API_URL[repository](name),
+      dataType: DATA_TYPE[repository],
+      responseType: RESPONSE_TYPE[repository]
     })
 
-    Taro.setStorage({ key: name, data })
-
-    this.images = parseImages(data)
+    this.images = parseImages(data, repository)
     this.urls = this.images.map(img => img.src)
     this.showMoreImages(true)
-
-    hideLoading()
   }
 
   showMoreImages = (reload?: boolean) => {

@@ -1,19 +1,16 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Picker } from '@tarojs/components'
 import { AtForm, AtSlider, AtSwitch } from 'taro-ui'
-import { getSetting } from '../../utils'
+import { getSetting, Setting } from '../../utils'
 import './index.less'
 
 interface State {
-  setting: {
-    perLineBQB: number,
-    showBQBTitle: boolean
-  }
+  setting: Setting
 }
 
 interface Props { }
 
-export default class Setting extends Component<Props, State> {
+export default class SettingPage extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,8 +24,8 @@ export default class Setting extends Component<Props, State> {
 
   updateSetting = (write?: boolean) => {
     if (write) {
-      const { perLineBQB, showBQBTitle } = this.state.setting
-      Taro.setStorageSync('setting', { perLineBQB, showBQBTitle })
+      const { setting } = this.state
+      Taro.setStorageSync('setting', setting)
     } else {
       this.setState({ setting: getSetting() })
     }
@@ -46,11 +43,22 @@ export default class Setting extends Component<Props, State> {
   }
 
   render() {
-    const { perLineBQB, showBQBTitle } = this.state.setting
+    const repositories = ['zhaoolee/ChineseBQB', 'getActivity/EmojiPackage']
+    const { repository, perLineBQB, showBQBTitle } = this.state.setting
 
     return (
       <View className="setting">
         <AtForm>
+          <View className="form-item">
+            <Picker
+              value={repositories.indexOf(repository)}
+              mode="selector"
+              range={repositories}
+              onChange={({ detail }) => this.handleSettingChange('repository', repositories[detail.value])}
+            >
+              <View className="form-item-title">表情包源：{repository}</View>
+            </Picker>
+          </View>
           <View className="form-item">
             <View className="form-item-title">每行图片数量</View>
             <AtSlider
