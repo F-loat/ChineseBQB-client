@@ -46,19 +46,20 @@ export default class BQBItem extends Component<Props, State> {
   }
 
   render() {
-    const { num, src, name, showTitle, onClick } = this.props
     const { isLoad, isError } = this.state
+    const { num, src, name, showTitle, onClick } = this.props
+    const className = this.props['bqb-custom-class'] || ''
 
     if (!src) {
       return (
-        <View className="bqb-item bqb-custom-class" onClick={onClick}>
+        <View className={`bqb-item bqb-custom-class ${className}`} onClick={onClick}>
           <View className="bqb-text">{name}</View>
         </View>
       )
     }
 
     return (
-      <View className="bqb-item bqb-custom-class" onClick={onClick}>
+      <View className={`bqb-item bqb-custom-class ${className}`} onClick={onClick}>
         <View className="bqb-image-wrap">
           <Image
             className={`bqb-image ${isLoad ? '' : 'hide'}`}
