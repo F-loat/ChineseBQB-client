@@ -43,7 +43,6 @@
     "@tarojs/taro-weapp": "2.0.2",
     "babel-runtime": "^6.26.0",
     "marked": "^0.7.0",
-    "nerv-devtools": "^1.5.5",
     "nervjs": "^1.5.5",
     "taro-ui": "^2.2.4"
   },
