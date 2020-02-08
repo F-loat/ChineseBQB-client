@@ -55,7 +55,7 @@ export default class IndexPage extends Component<Props, State> {
 
     const newSetting = getSetting()
 
-    if (repository) {
+    if (repository && repository !== setting.repository) {
       Taro.setStorageSync('setting', { ...newSetting, repository })
       Taro.reLaunch({ url: '/pages/index/index' })
     }
@@ -90,7 +90,7 @@ export default class IndexPage extends Component<Props, State> {
     const { repository } = this.state.setting
 
     return {
-      title: '开源表情包',
+      title: `开源表情包 - ${repository.replace(/.*\//, '')}`,
       imageUrl: bannerImage,
       path: `/pages/index/index?repository=${repository}`
     }
