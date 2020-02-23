@@ -47,6 +47,7 @@
     "taro-ui": "^2.2.4"
   },
   "devDependencies": {
+    "@tarojs/cli": "^2.0.4",
     "@tarojs/mini-runner": "2.0.0",
     "@tarojs/webpack-runner": "2.0.2",
     "@types/react": "^16.4.6",
