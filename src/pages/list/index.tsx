@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View, Button, Ad } from '@tarojs/components'
 import { request, ImageItem, parseImages, getSetting, Setting } from '../../utils'
 import { RESPONSE_TYPE, DATA_TYPE, LIST_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
@@ -12,6 +12,7 @@ interface State {
   urls: string[],
   setting: Setting,
   perLoadNum: number,
+  isDownloading: boolean,
   isLoad: boolean
 }
 
@@ -25,6 +26,7 @@ export default class ListPage extends Component<Props, State> {
       urls: [],
       setting: getSetting(),
       perLoadNum: 30,
+      isDownloading: false,
       isLoad: false
     }
   }
@@ -84,9 +86,11 @@ export default class ListPage extends Component<Props, State> {
       if (nextIndex < images.length) {
         this.downloadImages(nextIndex)
       } else {
+        this.setState({ isDownloading: false })
         Taro.showToast({ title: `保存完毕！`, duration: 5000 })
       }
     } catch (err) {
+      this.setState({ isDownloading: false })
       Taro.showToast({ title: '请授予保存图片权限', icon: 'none' })
     }
   }
@@ -95,7 +99,11 @@ export default class ListPage extends Component<Props, State> {
     Taro.showModal({
       title: '批量下载',
       content: '是否批量下载本类型全部表情包',
-      success: ({ confirm }) => confirm && this.downloadImages(0)
+      success: ({ confirm }) => {
+        if (!confirm) return
+        this.setState({ isDownloading: true })
+        this.downloadImages(0)
+      }
     })
   }
 
@@ -162,7 +170,7 @@ export default class ListPage extends Component<Props, State> {
   }
 
   render() {
-    const { images = [], isLoad, setting } = this.state
+    const { images = [], isDownloading, isLoad, setting } = this.state
     const { perLineBQB, showBQBTitle } = setting
     const bqbClassName = `bqb-item-${perLineBQB}`
 
@@ -182,6 +190,7 @@ export default class ListPage extends Component<Props, State> {
             onClick={() => this.handlePreview(img.src)}
           />
         ))}
+        {isDownloading && <Ad className="ad" unitId="adunit-03b8a8bbe82c5546" adIntervals={30} />}
         <Button
           className="flat-btn random-btn"
           onClick={() => this.handleDownload()}
