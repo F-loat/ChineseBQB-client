@@ -108,10 +108,8 @@ export default class ListPage extends Component<Props, State> {
   }
 
   handlePreview = (src) => {
-    Taro.previewImage({
-      urls: this.state.urls,
-      current: src
-    })
+    const urls = this.state.urls.concat(this.urls)
+    Taro.previewImage({ urls, current: src })
   }
 
   randomImages = () => {
