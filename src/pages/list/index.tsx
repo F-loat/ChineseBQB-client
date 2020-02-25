@@ -96,13 +96,16 @@ export default class ListPage extends Component<Props, State> {
   }
 
   handleDownload = () => {
+    this.setState({ isDownloading: true })
     Taro.showModal({
       title: '批量下载',
       content: '是否批量下载本类型全部表情包',
       success: ({ confirm }) => {
-        if (!confirm) return
-        this.setState({ isDownloading: true })
-        this.downloadImages(0)
+        if (confirm) {
+          this.downloadImages(0)
+        } else {
+          this.setState({ isDownloading: false })
+        }
       }
     })
   }
