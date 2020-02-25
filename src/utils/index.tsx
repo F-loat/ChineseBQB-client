@@ -144,7 +144,7 @@ export const getSetting = () => {
 
   const defaultSetting: Setting = {
     repository: 'zhaoolee/ChineseBQB',
-    perLineBQB: 4,
+    perLineBQB: 3,
     showBQBTitle: false
   }
 
