@@ -12,6 +12,7 @@ interface State {
   urls: string[],
   setting: Setting,
   perLoadNum: number,
+  isAbort: boolean,
   isDownloading: boolean,
   isLoad: boolean
 }
@@ -26,6 +27,7 @@ export default class ListPage extends Component<Props, State> {
       urls: [],
       setting: getSetting(),
       perLoadNum: 30,
+      isAbort: false,
       isDownloading: false,
       isLoad: false
     }
@@ -75,19 +77,23 @@ export default class ListPage extends Component<Props, State> {
 
   downloadImages = async (index: number = 0) => {
     try {
-      const images = this.state.images.concat(this.images)
-      const { src } = images[index]
+      const { name } = this.$router.params
+      const { isAbort, images } = this.state
+      const allImages = images.concat(this.images)
+      const { src } = allImages[index]
       const nextIndex = index + 1
 
       Taro.showLoading({ title: `保存第${nextIndex}张中...` })
       const res: any = await Taro.downloadFile({ url: src })
       await Taro.saveImageToPhotosAlbum({ filePath: res.tempFilePath })
+      Taro.setStorageSync(`DOWNLOAD ${name}`, nextIndex)
 
-      if (nextIndex < images.length) {
+      if (nextIndex < allImages.length && !isAbort) {
         this.downloadImages(nextIndex)
       } else {
-        this.setState({ isDownloading: false })
-        Taro.showToast({ title: `保存完毕！`, duration: 5000 })
+        this.setState({ isDownloading: false, isAbort: false })
+        Taro.showToast({ title: `保存完成！`, duration: 5000 })
+        !isAbort && Taro.removeStorageSync(`DOWNLOAD ${name}`)
       }
     } catch (err) {
       this.setState({ isDownloading: false })
@@ -95,19 +101,45 @@ export default class ListPage extends Component<Props, State> {
     }
   }
 
-  handleDownload = () => {
+  handleDownload = async () => {
+    const { name } = this.$router.params
+
     this.setState({ isDownloading: true })
-    Taro.showModal({
+
+    const { confirm: downloadConfirm } = await Taro.showModal({
       title: '批量下载',
-      content: '是否批量下载本类型全部表情包',
-      success: ({ confirm }) => {
-        if (confirm) {
-          this.downloadImages(0)
-        } else {
-          this.setState({ isDownloading: false })
-        }
-      }
+      content: '是否批量下载本类型全部表情包'
     })
+
+    if (!downloadConfirm) {
+      this.setState({ isDownloading: false })
+      return
+    }
+
+    const downloadCount = Taro.getStorageSync(`DOWNLOAD ${name}`)
+
+    if (!downloadCount) {
+      this.downloadImages(0)
+      return
+    }
+
+    const { confirm: continueConfirm } = await Taro.showModal({
+      title: '断点下载',
+      content: `是否从第 ${downloadCount} 张表情包开始下载`,
+      confirmText: '是',
+      cancelText: '否'
+    })
+
+    if (continueConfirm) {
+      this.downloadImages(downloadCount)
+    } else {
+      this.downloadImages(0)
+      Taro.removeStorageSync(`DOWNLOAD ${name}`)
+    }
+  }
+
+  handleAbort = () => {
+    this.setState({ isAbort: true })
   }
 
   handlePreview = (src) => {
@@ -191,14 +223,16 @@ export default class ListPage extends Component<Props, State> {
             onClick={() => this.handlePreview(img.src)}
           />
         ))}
-        {isDownloading && <Ad className="ad" unitId="adunit-03b8a8bbe82c5546" adIntervals={30} />}
         <Button
           className="flat-btn random-btn"
-          onClick={() => this.handleDownload()}
-          onLongPress={() => this.randomImages()}
+          onClick={isDownloading ? this.handleAbort : this.handleDownload}
+          onLongPress={this.randomImages}
         >
-          <View className='at-icon at-icon-download' />
+          {isDownloading
+            ? <View className='at-icon at-icon-close' />
+            : <View className='at-icon at-icon-download' />}
         </Button>
+        {isDownloading && <Ad className="ad" unitId="adunit-03b8a8bbe82c5546" adIntervals={30} />}
       </View>
     )
   }
