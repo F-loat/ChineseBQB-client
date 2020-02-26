@@ -4,7 +4,12 @@
 
 ## 预览
 
-* 扫描下方[小程序码](#截图)
+* 扫描下方小程序码
+
+<p>
+  <img alt="微信" src="./images/qrcode_weapp.jpg" width="32%" />
+  <img alt="QQ" src="./images/qrcode_qq.jpg" width="32%" />
+</p>
 
 * 访问网页版 [Demo](https://f-loat.github.io/ChineseBQB-client)
 
@@ -77,9 +82,6 @@ server {
 
 <p>
   <img alt="首页" src="./images/index.jpg" width="32%" />
-  <img alt="小程序码" src="./images/qrcode.jpg" width="32%" />
-  <img alt="列表" src="./images/list.jpg" width="32%" />
-  <img alt="预览" src="./images/preview.jpg" width="32%" />
   <img alt="关于" src="./images/about.jpg" width="32%" />
   <img alt="分享" src="./images/share.jpg" width="32%" />
 </p>
