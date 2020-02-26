@@ -136,7 +136,9 @@ export default class IndexPage extends Component<Props, State> {
             onClick={() => this.handleNavigate('/pages/about/index')}
           />
         )}
-        <Button className="flat-btn contact-btn" open-type="contact">+</Button>
+        {Taro.getEnv() === Taro.ENV_TYPE.WEAPP && (
+          <Button className="flat-btn contact-btn" open-type="contact">+</Button>
+        )}
       </View>
     )
   }
