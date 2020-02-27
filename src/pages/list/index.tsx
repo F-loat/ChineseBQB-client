@@ -104,17 +104,14 @@ export default class ListPage extends Component<Props, State> {
   handleDownload = async () => {
     const { name } = this.$router.params
 
-    this.setState({ isDownloading: true })
-
     const { confirm: downloadConfirm } = await Taro.showModal({
       title: '批量下载',
       content: '是否批量下载本类型全部表情包'
     })
 
-    if (!downloadConfirm) {
-      this.setState({ isDownloading: false })
-      return
-    }
+    if (!downloadConfirm) return
+
+    this.setState({ isDownloading: true })
 
     const downloadCount = Taro.getStorageSync(`DOWNLOAD ${name}`)
 
@@ -232,7 +229,15 @@ export default class ListPage extends Component<Props, State> {
             ? <View className='at-icon at-icon-close' />
             : <View className='at-icon at-icon-download' />}
         </Button>
-        {isDownloading && <Ad className="ad" unitId="adunit-03b8a8bbe82c5546" adIntervals={30} />}
+        {isDownloading && (
+          <Ad
+            className="ad"
+            unitId="adunit-bdb2ef4d16f2f6ff"
+            ad-type="video"
+            ad-theme="white"
+            ad-intervals={30}
+          />
+        )}
       </View>
     )
   }
