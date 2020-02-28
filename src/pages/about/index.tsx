@@ -3,6 +3,7 @@ import marked from 'marked'
 import { View, Button, RichText } from '@tarojs/components'
 import { request, getSetting, Setting } from '../../utils'
 import { ABOUT_API_URL } from '../../enums'
+import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 interface State {
@@ -70,10 +71,17 @@ export default class AboutPage extends Component<Props, State> {
     this.updateSetting()
   }
 
+  onShareAppMessage() {
+    return {
+      title: '开源表情包 - 关于',
+      imageUrl: bannerImage
+    }
+  }
+
   render() {
     return (
       <View className="about">
-        <RichText nodes={this.state.readme}></RichText>
+        <RichText nodes={this.state.readme} space="nbsp" />
         <Button
           className="flat-btn reward-btn"
           onClick={() => this.rewardDeveloper()}

@@ -106,7 +106,7 @@ export default class IndexPage extends Component<Props, State> {
     }
 
     return (
-      <View className="list">
+      <View className="index list">
         {types.map(type => (
           <BQBItem
             key={type.imgSrc}

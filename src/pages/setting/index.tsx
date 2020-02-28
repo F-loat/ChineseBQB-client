@@ -2,6 +2,7 @@ import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtForm, AtSlider, AtSwitch } from 'taro-ui'
 import { getSetting, Setting } from '../../utils'
+import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 interface State {
@@ -40,6 +41,13 @@ export default class SettingPage extends Component<Props, State> {
 
   componentDidShow() {
     this.updateSetting()
+  }
+
+  onShareAppMessage() {
+    return {
+      title: '开源表情包 - 设置',
+      imageUrl: bannerImage
+    }
   }
 
   render() {
