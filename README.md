@@ -50,6 +50,8 @@ npm run dev:h5
 
 * 本项目使用 [Taro](https://github.com/NervJS/taro) 框架开发，图片资源来自 [ChineseBQB](https://github.com/zhaoolee/ChineseBQB) 项目
 
+* 小程序图标及分享封面由方圆STU创始人[老罗巴扎嘿](https://huaban.com/syy946795671/muse_boards/)独立设计
+
 * 支持表情包 **批量下载** 及自定义布局，列表页长按下载按钮可将表情包随机排序
 
 * 由于小程序无法直接访问 GitHub (未备案)，所以通过 Nginx 做了一层代理
