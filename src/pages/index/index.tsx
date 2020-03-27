@@ -89,14 +89,6 @@ export default class IndexPage extends Component<Props, State> {
         ))}
         {isLoad && (
           <BQBItem
-            src={settingImage}
-            name="设置"
-            showTitle
-            onClick={() => this.handleNavigate('/pages/setting/index')}
-          />
-        )}
-        {isLoad && (
-          <BQBItem
             src={aboutImage}
             name="关于"
             showTitle
