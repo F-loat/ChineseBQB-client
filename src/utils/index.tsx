@@ -1,9 +1,8 @@
-import Taro from '@tarojs/taro'
 import { request } from './request'
 
 export interface TypeItem {
   name: string,
-  link: string,
+  link?: string,
   imgNum?: number,
   imgSrc?: string
 }
@@ -13,17 +12,11 @@ export interface ImageItem {
   name: string,
 }
 
-export interface Setting {
-  repository: 'zhaoolee/ChineseBQB' | 'getActivity/EmojiPackage',
-  perLineBQB: number,
-  showBQBTitle: boolean
+const getImageSrc = (path: string) => {
+  return `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${path}`
 }
 
-const getImageSrc = (path: string, repository: Setting['repository']) => {
-  return `https://proxy.youngon.com.cn/github/raw/${repository}/master/${path}`
-}
-
-export const parseTextTypes = (data: string, repository: Setting['repository']): TypeItem[] => {
+export const parseTypes = (data: string): TypeItem[] => {
   const tagMatchReg = /\|.*已收录.*\|/g
   const imgTags = data && data.match(tagMatchReg)
 
@@ -53,7 +46,7 @@ export const parseTextTypes = (data: string, repository: Setting['repository']):
       return {
         name: typeShortName,
         link: `/pages/list/index?name=${typeName}&title=${typeShortName}`,
-        imgSrc: getImageSrc(`${typeName}/${imgName}`, repository),
+        imgSrc: getImageSrc(`${typeName}/${imgName}`),
         imgNum: typeNum
       }
     })
@@ -63,30 +56,7 @@ export const parseTextTypes = (data: string, repository: Setting['repository']):
   return types
 }
 
-export const parseJsonTypes = (data: any[]): TypeItem[] => {
-  const types = data
-    .filter(item => item.type === 'dir')
-    .map(({ name }) => {
-      return {
-        name,
-        link: `/pages/list/index?name=${name}&title=${name}`
-      }
-    })
-
-  return types
-}
-
-export const parseTypes = (data: string | any[], repository: Setting['repository']): TypeItem[] => {
-  if (typeof data === 'string') {
-    return parseTextTypes(data, repository)
-  } else if (Array.isArray(data)) {
-    return parseJsonTypes(data)
-  } else {
-    return []
-  }
-}
-
-export const parseTextImages = ( data: string, repository: Setting['repository']): ImageItem[] => {
+export const parseImages = ( data: string): ImageItem[] => {
   const tagMatchReg = /\[.*?\]/g
   const imgTags = data && data.match(tagMatchReg)
 
@@ -107,48 +77,13 @@ export const parseTextImages = ( data: string, repository: Setting['repository']
       const imgName = matchInfos[2]
 
       return {
-        src: getImageSrc(`${typeName}/${imgName}`, repository),
+        src: getImageSrc(`${typeName}/${imgName}`),
         name: imgName.replace(/\..*$/, '')
       }
     })
     .filter(item => !!item.src)
 
   return images
-}
-
-export const parseJsonImages = (data: any[], repository: Setting['repository']) => {
-  const images = data
-    .filter(item => item.name.match(/\.(jpg|jpeg|gif|png)$/))
-    .map(item => {
-      return {
-        src: getImageSrc(item.path, repository),
-        name: item.name.replace(/\..*$/, '')
-      }
-    })
-
-  return images
-}
-
-export const parseImages = (data: string | any[], repository: Setting['repository']): ImageItem[] => {
-  if (typeof data === 'string') {
-    return parseTextImages(data, repository)
-  } else if (Array.isArray(data)) {
-    return parseJsonImages(data, repository)
-  } else {
-    return []
-  }
-}
-
-export const getSetting = () => {
-  const setting: Setting = Taro.getStorageSync('setting')
-
-  const defaultSetting: Setting = {
-    repository: 'zhaoolee/ChineseBQB',
-    perLineBQB: 3,
-    showBQBTitle: false
-  }
-
-  return Object.assign(defaultSetting, setting)
 }
 
 export {

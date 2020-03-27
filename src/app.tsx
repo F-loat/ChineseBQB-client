@@ -22,7 +22,6 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/list/index',
-      'pages/setting/index',
       'pages/about/index'
     ],
     window: {

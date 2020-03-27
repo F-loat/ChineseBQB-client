@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Button, Ad } from '@tarojs/components'
-import { request, ImageItem, parseImages, getSetting, Setting } from '../../utils'
-import { RESPONSE_TYPE, DATA_TYPE, LIST_API_URL } from '../../enums'
+import { request, ImageItem, parseImages } from '../../utils'
+import { LIST_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
 import bannerImage from '../../assets/banner.png'
@@ -10,7 +10,6 @@ import './index.less'
 interface State {
   images: ImageItem[],
   urls: string[],
-  setting: Setting,
   perLoadNum: number,
   isAbort: boolean,
   isDownloading: boolean,
@@ -25,7 +24,6 @@ export default class ListPage extends Component<Props, State> {
     this.state = {
       images: [],
       urls: [],
-      setting: getSetting(),
       perLoadNum: 30,
       isAbort: false,
       isDownloading: false,
@@ -43,15 +41,14 @@ export default class ListPage extends Component<Props, State> {
 
   fetchImages = async () => {
     const { name } = this.$router.params
-    const { repository } = this.state.setting
 
     const data = await request({
-      url: LIST_API_URL[repository](name),
-      dataType: DATA_TYPE[repository],
-      responseType: RESPONSE_TYPE[repository]
+      url: LIST_API_URL(name),
+      dataType: '其他',
+      responseType: 'text'
     })
 
-    this.images = parseImages(data, repository)
+    this.images = parseImages(data)
     this.urls = this.images.map(img => img.src)
     this.showMoreImages(true)
   }
@@ -156,15 +153,6 @@ export default class ListPage extends Component<Props, State> {
     Taro.showToast({ title: '表情包已随机排序', icon: 'none' })
   }
 
-  updateSetting = () => {
-    const setting = getSetting()
-    const { perLineBQB } = setting
-    const { windowHeight } = Taro.getSystemInfoSync()
-    const perLoadNum = Math.ceil(windowHeight * perLineBQB / 375) * perLineBQB
-
-    this.setState({ setting, perLoadNum  })
-  }
-
   componentDidMount() {
     const { title } = this.$router.params
 
@@ -175,10 +163,6 @@ export default class ListPage extends Component<Props, State> {
     }
 
     this.fetchImages()
-  }
-
-  componentDidShow() {
-    this.updateSetting()
   }
 
   async onPullDownRefresh() {
@@ -200,9 +184,7 @@ export default class ListPage extends Component<Props, State> {
   }
 
   render() {
-    const { images = [], isDownloading, isLoad, setting } = this.state
-    const { perLineBQB, showBQBTitle } = setting
-    const bqbClassName = `bqb-item-${perLineBQB}`
+    const { images = [], isDownloading, isLoad } = this.state
 
     if (!images.length) {
       return  isLoad ? <ErrTips /> : <View />
@@ -215,8 +197,7 @@ export default class ListPage extends Component<Props, State> {
             key={img.src}
             src={img.src}
             name={img.name}
-            showTitle={showBQBTitle}
-            bqb-custom-class={bqbClassName}
+            showTitle={false}
             onClick={() => this.handlePreview(img.src)}
           />
         ))}

@@ -72,7 +72,7 @@ export default class BQBItem extends Component<Props, State> {
           {isLoad ? null : <View className="bqb-image bqb-loading" />}
           {num && <Text className="bqb-num">{num}张</Text>}
         </View>
-        {showTitle && <Text className="bqb-name">{name}</Text>}
+        {showTitle && <View className="bqb-name">{name}</View>}
       </View>
     )
   }

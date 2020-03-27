@@ -1,14 +1,13 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import marked from 'marked'
 import { View, Button, RichText } from '@tarojs/components'
-import { request, getSetting, Setting } from '../../utils'
+import { request } from '../../utils'
 import { ABOUT_API_URL } from '../../enums'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 interface State {
-  readme: string,
-  setting: Setting
+  readme: string
 }
 
 interface Props { }
@@ -17,8 +16,7 @@ export default class AboutPage extends Component<Props, State> {
   constructor(props) {
     super(props)
     this.state = {
-      readme: '',
-      setting: getSetting()
+      readme: ''
     }
   }
 
@@ -41,10 +39,8 @@ export default class AboutPage extends Component<Props, State> {
   }
 
   async fetchAbout() {
-    const { repository } = this.state.setting
-
     const data = await request({
-      url: ABOUT_API_URL[repository],
+      url: ABOUT_API_URL,
       dataType: '其他',
       responseType: 'text'
     })
@@ -56,19 +52,8 @@ export default class AboutPage extends Component<Props, State> {
     this.setState({ readme })
   }
 
-  updateSetting = () => {
-    const setting = getSetting()
-    this.setState({ setting }, () => {
-      this.fetchAbout()
-    })
-  }
-
   componentDidMount() {
     this.fetchAbout()
-  }
-
-  componentDidShow() {
-    this.updateSetting()
   }
 
   onShareAppMessage() {
