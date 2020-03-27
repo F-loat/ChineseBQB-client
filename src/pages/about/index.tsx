@@ -26,8 +26,8 @@ export default class AboutPage extends Component<Props, State> {
 
   rewardDeveloper = () => {
     const urls = [
-      'https://github.com/F-loat/ChineseBQB-client/raw/master/images/tuyan.jpg',
-      'https://github.com/F-loat/ChineseBQB-client/raw/master/images/zhaozhao.jpg'
+      'https://proxy.youngon.com.cn/github/raw/F-loat/ChineseBQB-client/master/images/tuyan.jpg',
+      'https://proxy.youngon.com.cn/github/raw/F-loat/ChineseBQB-client/master/images/zhaozhao.jpg'
     ]
 
     const randomIndex = Math.random() > 0.5 ? 0 : 1
