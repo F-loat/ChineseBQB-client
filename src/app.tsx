@@ -24,11 +24,15 @@ class App extends Component {
       'pages/list/index'
     ],
     window: {
-      navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: '开源表情包',
-      navigationBarTextStyle: 'black',
-      backgroundTextStyle: 'dark'
-    }
+      backgroundColor: '@bgColor',
+      backgroundTextStyle: '@bgTxtStyle',
+      navigationBarBackgroundColor: '@navBgColor',
+      navigationBarTextStyle: '@navTxtStyle'
+    },
+    darkmode: true,
+    themeLocation: 'theme.json',
+    style: 'v2'
   }
 
   checkUpdate = () => {

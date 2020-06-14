@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable import/no-commonjs */
+const path = require('path')
+
 const config = {
   projectName: 'ChineseBQB',
   date: '2019-7-11',
@@ -25,6 +29,15 @@ const config = {
     ]
   },
   plugins: [],
+  copy: {
+    patterns: [
+      { from: 'src/theme.json', to: 'dist/theme.json' }
+    ]
+  },
+  alias: {
+    '@/components': path.resolve(__dirname, '..', 'src/components'),
+    '@/utils': path.resolve(__dirname, '..', 'src/utils')
+  },
   defineConstants: {
   },
   mini: {

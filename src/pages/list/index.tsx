@@ -1,5 +1,6 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button, Ad } from '@tarojs/components'
+import { View } from '@tarojs/components'
+import { AtFab } from 'taro-ui'
 import { request, ImageItem, parseImages } from '../../utils'
 import { LIST_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
@@ -201,24 +202,15 @@ export default class ListPage extends Component<Props, State> {
             onClick={() => this.handlePreview(img.src)}
           />
         ))}
-        <Button
-          className="flat-btn random-btn"
+        <AtFab
+          className="download-btn"
           onClick={isDownloading ? this.handleAbort : this.handleDownload}
           onLongPress={this.randomImages}
         >
           {isDownloading
             ? <View className='at-icon at-icon-close' />
             : <View className='at-icon at-icon-download' />}
-        </Button>
-        {isDownloading && (
-          <Ad
-            className="ad"
-            unitId="adunit-bdb2ef4d16f2f6ff"
-            ad-type="video"
-            ad-theme="white"
-            ad-intervals={30}
-          />
-        )}
+        </AtFab>
       </View>
     )
   }

@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { request, TypeItem, parseTypes } from '../../utils'
 import { INDEX_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
@@ -85,9 +85,6 @@ export default class IndexPage extends Component<Props, State> {
             onClick={() => this.handleNavigate(type.link)}
           />
         ))}
-        {Taro.getEnv() === Taro.ENV_TYPE.WEAPP && (
-          <Button className="flat-btn contact-btn" open-type="contact">+</Button>
-        )}
       </View>
     )
   }

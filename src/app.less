@@ -1,3 +1,19 @@
+page {
+  --color-bg: #fff;
+  --color-bg-secondary: #f5f5f5;
+  --color-text: #333;
+  --color-text-secondary: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+  page {
+    --color-bg: #1b1b1b;
+    --color-bg-secondary: #202020;
+    --color-text: #ccc;
+    --color-text-secondary: #999;
+  }
+}
+
 .list {
   margin: 8px 0 8px 16px;
   overflow: auto;
@@ -7,7 +23,7 @@
   width: 112px;
   height: 112px;
   border-radius: 50%;
-  color: #eee;
+  color: #f5f5f5;
   font-size: 54px;
   line-height: 110px;
   background-color: #000;
