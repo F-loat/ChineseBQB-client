@@ -4,8 +4,6 @@ import { request, TypeItem, parseTypes } from '../../utils'
 import { INDEX_API_URL } from '../../enums'
 import BQBItem from '../../components/bqb-item'
 import ErrTips from '../../components/err-tips'
-import aboutImage from '../../assets/about.jpg'
-import settingImage from '../../assets/setting.jpg'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
@@ -87,14 +85,6 @@ export default class IndexPage extends Component<Props, State> {
             onClick={() => this.handleNavigate(type.link)}
           />
         ))}
-        {isLoad && (
-          <BQBItem
-            src={aboutImage}
-            name="关于"
-            showTitle
-            onClick={() => this.handleNavigate('/pages/about/index')}
-          />
-        )}
         {Taro.getEnv() === Taro.ENV_TYPE.WEAPP && (
           <Button className="flat-btn contact-btn" open-type="contact">+</Button>
         )}

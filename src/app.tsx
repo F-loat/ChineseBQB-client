@@ -21,8 +21,7 @@ class App extends Component {
   config: Config = {
     pages: [
       'pages/index/index',
-      'pages/list/index',
-      'pages/about/index'
+      'pages/list/index'
     ],
     window: {
       navigationBarBackgroundColor: '#fff',

@@ -12,19 +12,13 @@ export interface ImageItem {
   name: string,
 }
 
-const getImageSrc = (path: string) => {
-  return `https://proxy.youngon.com.cn/github/raw/zhaoolee/ChineseBQB/master/${path}`
-}
-
 export const parseTypes = (data: string): TypeItem[] => {
-  const tagMatchReg = /\|.*已收录.*\|/g
-  const imgTags = data && data.match(tagMatchReg)
+  const tagMatchReg = /td style.*?已收录.*?td/g
+  const imgTags = data && data.match(tagMatchReg) || []
 
-  if (!imgTags) {
-    return []
-  }
+  imgTags.splice(0, 2)
 
-  const infoMatchReg = /.*master\/(.*?)\/(.*?) .*已收录(\d*)张/
+  const infoMatchReg = /.*data-src='(.*)'.*p\/(.*?)\/.*?已收录(\d*)张/
   const types: TypeItem[] = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
@@ -38,15 +32,14 @@ export const parseTypes = (data: string): TypeItem[] => {
         }
       }
 
-      const typeName = matchInfos[1]
+      const typeName = matchInfos[2]
       const typeShortName = typeName.replace(/^(\w)*/, '').replace(/BQB$/, '')
-      const imgName = matchInfos[2]
       const typeNum = Number(matchInfos[3])
 
       return {
         name: typeShortName,
         link: `/pages/list/index?name=${typeName}&title=${typeShortName}`,
-        imgSrc: getImageSrc(`${typeName}/${imgName}`),
+        imgSrc: matchInfos[1],
         imgNum: typeNum
       }
     })
@@ -56,15 +49,15 @@ export const parseTypes = (data: string): TypeItem[] => {
   return types
 }
 
-export const parseImages = ( data: string): ImageItem[] => {
-  const tagMatchReg = /\[.*?\]/g
+export const parseImages = (data: string): ImageItem[] => {
+  const tagMatchReg = /data-src='.*?'/g
   const imgTags = data && data.match(tagMatchReg)
 
   if (!imgTags) {
     return []
   }
 
-  const infoMatchReg = /.*master\/(.*)\/(.*)\]/
+  const infoMatchReg = /data-src='(.*?)'/
   const images = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
@@ -73,12 +66,9 @@ export const parseImages = ( data: string): ImageItem[] => {
         return { src: '', name: '未命名' }
       }
 
-      const typeName = matchInfos[1]
-      const imgName = matchInfos[2]
-
       return {
-        src: getImageSrc(`${typeName}/${imgName}`),
-        name: imgName.replace(/\..*$/, '')
+        src: matchInfos[1],
+        name: matchInfos[1].replace(/.*\//, '').replace(/\..*$/, '')
       }
     })
     .filter(item => !!item.src)
