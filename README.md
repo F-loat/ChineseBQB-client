@@ -7,8 +7,8 @@
 * 扫描下方小程序码
 
 <p>
-  <img alt="QQ" src="https://github.com/F-loat/ChineseBQB-client/blob/master/images/qrocde_qq.jpg?raw=true" width="24%" />
-  <img alt="微信" src="https://github.com/F-loat/ChineseBQB-client/blob/master/images/qrcode_weapp.jpg?raw=true" width="24%" />
+  <img alt="微信" src="./images/qrcode_weapp.jpg?raw=true" width="24%" />
+  <img alt="QQ" src="./images/qrcode_qq.jpg?raw=true" width="24%" />
 </p>
 
 * 访问网页版 [Demo](https://f-loat.github.io/ChineseBQB-client)
@@ -79,10 +79,11 @@ server {
 }
 ```
 
-## 截图
+* 个人主体小程序未开放分享类目，分享功能暂无法上线
+
+## 赞赏
 
 <p>
-  <img alt="首页" src="https://github.com/F-loat/ChineseBQB-client/blob/master/images/index.jpg?raw=true" width="32%" />
-  <img alt="关于" src="https://github.com/F-loat/ChineseBQB-client/blob/master/images/about.jpg?raw=true" width="32%" />
-  <img alt="分享" src="https://github.com/F-loat/ChineseBQB-client/blob/master/images/share.jpg?raw=true" width="32%" />
+  <img alt="微信" src="./images/tuyan.jpg?raw=true" width="24%" />
+  <img alt="QQ" src="./images/zhaozhao.jpg?raw=true" width="24%" />
 </p>
