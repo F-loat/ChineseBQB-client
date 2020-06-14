@@ -44,7 +44,6 @@ export const parseTypes = (data: string): TypeItem[] => {
       }
     })
     .filter(item => !!item.imgNum)
-    .sort((item, nextItem) => (nextItem.imgNum - item.imgNum))
 
   return types
 }
