@@ -43,7 +43,17 @@ export const parseTypes = (data: string): TypeItem[] => {
         imgNum: typeNum
       }
     })
-    .filter(item => !!item.imgNum)
+    .filter(item => {
+      if (!item.imgNum) {
+        return false
+      }
+
+      if (item.name.match(/特朗普/)) {
+        return false
+      }
+
+      return true
+    })
 
   return types
 }
