@@ -57,6 +57,6 @@ npm run dev:h5
 ## 赞赏
 
 <p>
-  <img alt="微信" src="./images/tuyan.jpg?raw=true" width="24%" />
-  <img alt="QQ" src="./images/zhaozhao.jpg?raw=true" width="24%" />
+  <img alt="tuyan" src="./images/tuyan.jpg?raw=true" width="24%" />
+  <img alt="zhaozhao" src="./images/zhaozhao.jpg?raw=true" width="24%" />
 </p>
