@@ -13,17 +13,17 @@ export interface ImageItem {
 }
 
 export const parseTypes = (data: string): TypeItem[] => {
-  const tagMatchReg = /td style.*?已收录.*?td/g
+  const tagMatchReg = /<td style="([\s\S]*?)<\/tr>/g
   const imgTags = data && data.match(tagMatchReg) || []
 
-  imgTags.splice(0, 2)
-
-  const infoMatchReg = /.*data-src='(.*)'.*p\/(.*?)\/.*?已收录(\d*)张/
+  const imgMatchReg = /.*src='(.*)'/
+  const infoMatchReg = /\/">(.*?)\(已收录(\d*)张/
   const types: TypeItem[] = imgTags
     .map(item => {
+      const matchImg = item.match(imgMatchReg)
       const matchInfos = item.match(infoMatchReg)
 
-      if (!matchInfos) {
+      if (!matchImg || !matchInfos) {
         return {
           name: '未命名',
           link: '',
@@ -32,14 +32,14 @@ export const parseTypes = (data: string): TypeItem[] => {
         }
       }
 
-      const typeName = matchInfos[2]
+      const typeName = matchInfos[1]
       const typeShortName = typeName.replace(/^(\w)*/, '').replace(/BQB$/, '')
-      const typeNum = Number(matchInfos[3])
+      const typeNum = Number(matchInfos[2])
 
       return {
         name: typeShortName,
         link: `/pages/list/index?name=${typeName}&title=${typeShortName}`,
-        imgSrc: matchInfos[1],
+        imgSrc: matchImg[1],
         imgNum: typeNum
       }
     })
@@ -59,14 +59,14 @@ export const parseTypes = (data: string): TypeItem[] => {
 }
 
 export const parseImages = (data: string): ImageItem[] => {
-  const tagMatchReg = /data-src='.*?'/g
+  const tagMatchReg = /data-original='.*?'/g
   const imgTags = data && data.match(tagMatchReg)
 
   if (!imgTags) {
     return []
   }
 
-  const infoMatchReg = /data-src='(.*?)'/
+  const infoMatchReg = /data-original='(.*?)'/
   const images = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
