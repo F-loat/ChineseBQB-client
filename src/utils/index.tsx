@@ -16,6 +16,8 @@ export const parseTypes = (data: string): TypeItem[] => {
   const tagMatchReg = /<td style="([\s\S]*?)<\/tr>/g
   const imgTags = data && data.match(tagMatchReg) || []
 
+  imgTags.splice(0, 2)
+
   const imgMatchReg = /.*src='(.*)'/
   const infoMatchReg = /\/">(.*?)\(已收录(\d*)张/
   const types: TypeItem[] = imgTags
