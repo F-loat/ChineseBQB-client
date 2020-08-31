@@ -34,7 +34,7 @@ export const parseTypes = (data: string): TypeItem[] => {
         }
       }
 
-      const typeName = matchInfos[1]
+      const typeName = matchInfos[1].replace(/<\/?em>/g, '_')
       const typeShortName = typeName.replace(/^(\w)*/, '').replace(/BQB$/, '')
       const typeNum = Number(matchInfos[2])
 
@@ -61,14 +61,14 @@ export const parseTypes = (data: string): TypeItem[] => {
 }
 
 export const parseImages = (data: string): ImageItem[] => {
-  const tagMatchReg = /data-original='.*?'/g
+  const tagMatchReg = /data-src='.*?'/g
   const imgTags = data && data.match(tagMatchReg)
 
   if (!imgTags) {
     return []
   }
 
-  const infoMatchReg = /data-original='(.*?)'/
+  const infoMatchReg = /data-src='(.*?)'/
   const images = imgTags
     .map(item => {
       const matchInfos = item.match(infoMatchReg)
