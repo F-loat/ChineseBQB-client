@@ -1,91 +1,56 @@
-import Taro, { Component, Config } from '@tarojs/taro'
+import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { request, TypeItem, parseTypes } from '../../utils'
-import { INDEX_API_URL } from '../../enums'
+import { useTypesMap } from '../../utils/hooks'
 import BQBItem from '../../components/bqb-item'
-import ErrTips from '../../components/err-tips'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
-interface State {
-  types: TypeItem[],
-  isLoad: boolean
+interface TypeItem {
+  name: string,
+  link?: string,
+  imgNum?: number,
+  imgSrc?: string
 }
 
-interface Props { }
+export default function IndexPage () {
+  const { typesMap } = useTypesMap(true);
 
-export default class IndexPage extends Component<Props, State> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      types: [],
-      isLoad: false
+  const types: TypeItem[] = typesMap ? Object.keys(typesMap).map(key => {
+    return {
+      key,
+      name: key.replace(/^(\w)*/, '').replace(/BQB$/, ''),
+      ...typesMap[key]
     }
-  }
+  }) : []
 
-  types: TypeItem[]
-
-  config: Config = {
-    navigationBarTitleText: '开源表情包',
-    enablePullDownRefresh: true
-  }
-
-  fetchTypes = async () => {
-    const data = await request({
-      url: INDEX_API_URL,
-      dataType: '其他',
-      responseType: 'text'
-    })
-
-    this.setState({
-      types: parseTypes(data),
-      isLoad: true
-    })
-  }
-
-  handleNavigate = (url?: string) => {
-    if (url) {
-      Taro.navigateTo({ url })
-    }
-  }
-
-  componentDidMount() {
-    this.fetchTypes()
-  }
-
-  async onPullDownRefresh() {
-    await this.fetchTypes()
-    Taro.stopPullDownRefresh()
-  }
-
-  onShareAppMessage() {
+  useShareAppMessage(() => {
     return {
       title: '开源表情包',
       imageUrl: bannerImage,
       path: '/pages/index/index'
     }
+  })
+
+  const handleNavigate = (type?: any) => {
+    Taro.navigateTo({ url: `/pages/list/index?key=${type.key}&title=${type.name}` })
   }
 
-  render() {
-    const { types = [], isLoad } = this.state
+  return (
+    <View className="index list">
+      {types.map(type => (
+        <BQBItem
+          key={type.imgSrc}
+          name={type.name}
+          src={type.imgSrc}
+          num={type.imgNum}
+          showTitle
+          onClick={() => handleNavigate(type)}
+        />
+      ))}
+    </View>
+  )
+}
 
-    if (!types.length) {
-      return isLoad ? <ErrTips /> : <View />
-    }
-
-    return (
-      <View className="index list">
-        {types.map(type => (
-          <BQBItem
-            key={type.imgSrc}
-            name={type.name}
-            src={type.imgSrc}
-            num={type.imgNum}
-            showTitle
-            onClick={() => this.handleNavigate(type.link)}
-          />
-        ))}
-      </View>
-    )
-  }
+IndexPage.config = {
+  navigationBarTitleText: '开源表情包'
 }
