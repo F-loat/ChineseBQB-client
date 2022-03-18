@@ -28,7 +28,10 @@ const config = {
       }]
     ]
   },
-  plugins: [],
+  plugins: [
+    '@tarojs/plugin-less',
+    '@tarojs/plugin-terser'
+  ],
   copy: {
     patterns: [
       { from: 'src/theme.json', to: 'dist/theme.json' }
@@ -64,7 +67,6 @@ const config = {
   h5: {
     publicPath: process.env.NODE_ENV === 'production' ? '/ChineseBQB-client/' : '/',
     staticDirectory: 'static',
-    esnextModules: ['taro-ui'],
     postcss: {
       autoprefixer: {
         enable: true,

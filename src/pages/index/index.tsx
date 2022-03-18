@@ -1,27 +1,12 @@
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { useTypesMap } from '../../utils/hooks'
+import { useTypes } from '../../utils/hooks'
 import BQBItem from '../../components/bqb-item'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
-interface TypeItem {
-  name: string,
-  link?: string,
-  imgNum?: number,
-  imgSrc?: string
-}
-
 export default function IndexPage () {
-  const { typesMap } = useTypesMap(true);
-
-  const types: TypeItem[] = typesMap ? Object.keys(typesMap).map(key => {
-    return {
-      key,
-      name: key.replace(/^(\w)*/, '').replace(/BQB$/, ''),
-      ...typesMap[key]
-    }
-  }) : []
+  const { types } = useTypes()
 
   useShareAppMessage(() => {
     return {
@@ -32,7 +17,7 @@ export default function IndexPage () {
   })
 
   const handleNavigate = (type?: any) => {
-    Taro.navigateTo({ url: `/pages/list/index?key=${type.key}&title=${type.name}` })
+    Taro.navigateTo({ url: `/pages/list/index?title=${type.name}&path=${type.fullname}` })
   }
 
   return (

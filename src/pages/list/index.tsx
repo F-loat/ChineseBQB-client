@@ -1,8 +1,8 @@
-import Taro, { useState, useRouter, useShareAppMessage, useEffect } from '@tarojs/taro'
+import Taro, { useState, useRouter, useShareAppMessage, useEffect, useMemo } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtFab } from 'taro-ui'
-import { useTypesMap } from '../../utils/hooks'
+import { useImages } from '../../utils/hooks'
 import BQBItem from '../../components/bqb-item'
+import BQBFab from '../../components/bqb-fab'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
@@ -10,8 +10,9 @@ export default function ListPage() {
   const { params } = useRouter()
   const [isAbort, setIsAbort] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
-  const [images, setImages] = useState<string[]>([]);
-  const { typesMap } = useTypesMap(false);
+  const { images, setImages } = useImages(params.path)
+
+  const imageUrls = useMemo(() => images.map(item => item.imgSrc), [images])
 
   useEffect(() => {
     const { title } = params
@@ -23,11 +24,6 @@ export default function ListPage() {
     }
   }, [])
 
-  useEffect(() => {
-    if (!typesMap) return
-    setImages(typesMap[params.key].imgList)
-  }, [typesMap])
-
   useShareAppMessage(() => {
     return {
       title: `开源表情包 - ${params.title}`,
@@ -37,14 +33,14 @@ export default function ListPage() {
 
   const downloadImages = async (index: number = 0) => {
     try {
-      const { name } = params
-      const src = images[index]
+      const { title } = params
+      const image = images[index]
       const nextIndex = index + 1
 
       Taro.showLoading({ title: `保存第${nextIndex}张中...` })
-      const res: any = await Taro.downloadFile({ url: src })
+      const res: any = await Taro.downloadFile({ url: image.imgSrc })
       await Taro.saveImageToPhotosAlbum({ filePath: res.tempFilePath })
-      Taro.setStorageSync(`DOWNLOAD ${name}`, nextIndex)
+      Taro.setStorageSync(`DOWNLOAD ${title}`, nextIndex)
 
       if (nextIndex < images.length && !isAbort) {
         downloadImages(nextIndex)
@@ -52,7 +48,7 @@ export default function ListPage() {
         setIsDownloading(false)
         setIsAbort(false)
         Taro.showToast({ title: `保存完成！`, duration: 5000 })
-        !isAbort && Taro.removeStorageSync(`DOWNLOAD ${name}`)
+        !isAbort && Taro.removeStorageSync(`DOWNLOAD ${title}`)
       }
     } catch (err) {
       setIsDownloading(false)
@@ -61,7 +57,7 @@ export default function ListPage() {
   }
 
   const handleDownload = async () => {
-    const { name } = params
+    const { title } = params
 
     const { confirm: downloadConfirm } = await Taro.showModal({
       title: '批量下载',
@@ -72,7 +68,7 @@ export default function ListPage() {
 
     setIsDownloading(true)
 
-    const downloadCount = Taro.getStorageSync(`DOWNLOAD ${name}`)
+    const downloadCount = Taro.getStorageSync(`DOWNLOAD ${title}`)
 
     if (!downloadCount) {
       downloadImages(0)
@@ -90,17 +86,18 @@ export default function ListPage() {
       downloadImages(downloadCount)
     } else {
       downloadImages(0)
-      Taro.removeStorageSync(`DOWNLOAD ${name}`)
+      Taro.removeStorageSync(`DOWNLOAD ${title}`)
     }
   }
 
   const handleAbort = () => {
     setIsAbort(true)
+    Taro.hideLoading()
   }
 
   const handlePreview = (src) => {
     Taro.previewImage({
-      urls: images,
+      urls: imageUrls,
       current: src
     })
   }
@@ -116,20 +113,20 @@ export default function ListPage() {
     <View className='list'>
       {images.map(img => (
         <BQBItem
-          key={img}
-          src={img}
+          key={img.imgSrc}
+          src={img.imgSrc}
           showTitle={false}
-          onClick={() => handlePreview(img)}
+          onClick={() => handlePreview(img.imgSrc)}
         />
       ))}
-      <AtFab
+      <BQBFab
         className="download-btn"
         onClick={isDownloading ? handleAbort : handleDownload}
       >
         {isDownloading
           ? <View className='at-icon at-icon-close' />
           : <View onLongPress={randomImages} className='at-icon at-icon-download' />}
-      </AtFab>
+      </BQBFab>
     </View>
   )
 }
