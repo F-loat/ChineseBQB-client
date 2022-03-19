@@ -1,4 +1,4 @@
-import Taro, { useRouter, useState, useMemo, useShareAppMessage } from '@tarojs/taro'
+import Taro, { useRouter, useState, useMemo, useShareAppMessage, useReachBottom } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { useSearch } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
@@ -10,12 +10,13 @@ export default function SearchPage () {
   const { params } = useRouter()
   const { data } = useSearch()
   const [keyword, setKeyword] = useState(params.keyword || '')
+  const [pageNum, setPageNum] = useState(1)
   const [randomCount, setRandomCount] = useState(0)
 
   const images = useMemo(() => {
     if (!keyword) return data.sort(() => (Math.random() > 0.5 ? -1 : 1)).slice(0, 12)
-    return data.filter(item => item.name.includes(keyword)).slice(0, 99)
-  }, [data, keyword, randomCount])
+    return data.filter(item => item.name.includes(keyword)).slice(0, 21 * pageNum)
+  }, [data, keyword, randomCount, pageNum])
 
   const imageUrls = useMemo(() => images.map(item => item.imgSrc), [images])
 
@@ -27,11 +28,21 @@ export default function SearchPage () {
     }
   })
 
+  useReachBottom(() => {
+    if (!keyword) return
+    setPageNum(pageNum + 1)
+  })
+
   const handlePreview = (src) => {
     Taro.previewImage({
       urls: imageUrls,
       current: src
     })
+  }
+
+  const handleSearch = (keyword) => {
+    setKeyword(keyword)
+    setPageNum(1)
   }
 
   return (
@@ -40,7 +51,7 @@ export default function SearchPage () {
         <BQBInput
           defaultValue={params.keyword}
           placeholder="请输入表情包关键词~"
-          onChange={setKeyword}
+          onChange={handleSearch}
         />
         {images.map(img => (
           <BQBItem

@@ -50,7 +50,10 @@ const useSearch = () => {
     })
   }
 
-  return { data, loading }
+  return {
+    loading,
+    data
+  }
 }
 
 export default useSearch

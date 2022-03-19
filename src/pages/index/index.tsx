@@ -7,7 +7,7 @@ import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 export default function IndexPage () {
-  const { types } = useTypes()
+  const { data } = useTypes()
 
   useShareAppMessage(() => {
     return {
@@ -31,7 +31,7 @@ export default function IndexPage () {
         placeholder="请输入表情包关键词~"
         onSearch={handleSearch}
       />
-      {types.map(type => (
+      {data.map(type => (
         <BQBItem
           key={type.imgSrc}
           name={type.name}

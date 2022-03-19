@@ -51,7 +51,11 @@ const useImages = (path) => {
     })
   }
 
-  return { loading, images, setImages, fetchImages }
+  return {
+    loading,
+    data: images,
+    setData: setImages
+  }
 }
 
 export default useImages

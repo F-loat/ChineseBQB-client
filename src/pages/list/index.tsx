@@ -1,4 +1,4 @@
-import Taro, { useState, useRouter, useShareAppMessage, useEffect, useMemo } from '@tarojs/taro'
+import Taro, { useState, useMemo, useRouter, useShareAppMessage, useReachBottom, useEffect } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { useImages } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
@@ -10,9 +10,11 @@ export default function ListPage() {
   const { params } = useRouter()
   const [isAbort, setIsAbort] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
-  const { images, setImages } = useImages(params.path)
+  const { data, setData } = useImages(params.path)
+  const [pageNum, setPageNum] = useState(1)
 
-  const imageUrls = useMemo(() => images.map(item => item.imgSrc), [images])
+  const images = useMemo(() => data.slice(0, 21 * pageNum), [data, pageNum])
+  const imageUrls = useMemo(() => data.map(item => item.imgSrc), [data])
 
   useEffect(() => {
     const { title } = params
@@ -31,10 +33,14 @@ export default function ListPage() {
     }
   })
 
+  useReachBottom(() => {
+    setPageNum(pageNum + 1)
+  })
+
   const downloadImages = async (index: number = 0) => {
     try {
       const { title } = params
-      const image = images[index]
+      const image = data[index]
       const nextIndex = index + 1
 
       Taro.showLoading({ title: `保存第${nextIndex}张中...` })
@@ -42,7 +48,7 @@ export default function ListPage() {
       await Taro.saveImageToPhotosAlbum({ filePath: res.tempFilePath })
       Taro.setStorageSync(`DOWNLOAD ${title}`, nextIndex)
 
-      if (nextIndex < images.length && !isAbort) {
+      if (nextIndex < data.length && !isAbort) {
         downloadImages(nextIndex)
       } else {
         setIsDownloading(false)
@@ -103,8 +109,8 @@ export default function ListPage() {
   }
 
   const randomImages = () => {
-    setImages([])
-    setImages(images.sort(() => (Math.random() > 0.5 ? -1 : 1)))
+    setData([])
+    setData(data.sort(() => (Math.random() > 0.5 ? -1 : 1)))
     Taro.pageScrollTo({ scrollTop: 0 })
     Taro.showToast({ title: '表情包已随机排序', icon: 'none' })
   }

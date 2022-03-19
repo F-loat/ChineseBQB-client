@@ -58,7 +58,10 @@ const useTypes = () => {
     })
   }
 
-  return { loading, types, fetchTypes }
+  return {
+    loading,
+    data: types
+  }
 }
 
 export default useTypes
