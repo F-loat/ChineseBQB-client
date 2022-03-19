@@ -15,17 +15,16 @@ const useSearch = () => {
     Taro.getStorage({ key: cacheKey })
       .then(({ data }) => {
         if (data) setData(data)
+        fetchData({ refresh: false })
         Taro.showNavigationBarLoading()
       })
       .catch(() => {
+        fetchData({ refresh: true })
         Taro.showLoading({ title: '加载中' })
-      })
-      .finally(() => {
-        fetchData()
       })
   }, [])
 
-  const fetchData = () => {
+  const fetchData = ({ refresh }) => {
     setLoading(true)
 
     request({
@@ -42,7 +41,7 @@ const useSearch = () => {
         }
       })
 
-      setData(newData)
+      refresh && setData(newData)
       setLoading(false)
       Taro.setStorage({
         key: cacheKey,

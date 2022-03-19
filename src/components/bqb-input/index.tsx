@@ -3,6 +3,7 @@ import { View, Input, Button } from '@tarojs/components'
 import './index.less'
 
 interface Props {
+  defaultValue?: string
   disabled?: boolean;
   placeholder?: string;
   onClick?: () => void;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function BQBInput ({
+  defaultValue,
   disabled,
   placeholder,
   onClick,
@@ -18,7 +20,7 @@ export default function BQBInput ({
   onSearch
 }: Props) {
   const timer = useRef<any>({ id: null })
-  const [innerVal, setInnerVal] = useState('')
+  const [innerVal, setInnerVal] = useState(defaultValue || '')
 
   const handleClick = () => {
     onClick && onClick()
@@ -40,6 +42,7 @@ export default function BQBInput ({
   return (
     <View className="bqb-input" onClick={handleClick}>
       <Input
+        value={innerVal}
         disabled={disabled}
         placeholder={placeholder}
         onInput={handleInput}

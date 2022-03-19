@@ -17,8 +17,8 @@ export default function IndexPage () {
     }
   })
 
-  const handleSearch = () => {
-    Taro.navigateTo({ url: '/pages/search/index' })
+  const handleSearch = (value) => {
+    Taro.navigateTo({ url: `/pages/search/index?keyword=${value}` })
   }
 
   const handleNavigate = (type: any) => {
@@ -28,9 +28,8 @@ export default function IndexPage () {
   return (
     <View className="index list">
       <BQBInput
-        disabled
         placeholder="请输入表情包关键词~"
-        onClick={() => handleSearch()}
+        onSearch={handleSearch}
       />
       {types.map(type => (
         <BQBItem
