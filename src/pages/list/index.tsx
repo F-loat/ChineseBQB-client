@@ -1,6 +1,6 @@
 import Taro, { useState, useRouter, useShareAppMessage, useEffect, useMemo } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { useImages } from '../../utils/hooks'
+import { useImages } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
 import BQBFab from '../../components/bqb-fab'
 import bannerImage from '../../assets/banner.png'
@@ -120,12 +120,12 @@ export default function ListPage() {
         />
       ))}
       <BQBFab
-        className="download-btn"
         onClick={isDownloading ? handleAbort : handleDownload}
+        onLongPress={randomImages}
       >
         {isDownloading
           ? <View className='at-icon at-icon-close' />
-          : <View onLongPress={randomImages} className='at-icon at-icon-download' />}
+          : <View className='at-icon at-icon-download' />}
       </BQBFab>
     </View>
   )

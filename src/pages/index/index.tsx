@@ -1,7 +1,8 @@
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { useTypes } from '../../utils/hooks'
+import { useTypes } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
+import BQBInput from '../../components/bqb-input'
 import bannerImage from '../../assets/banner.png'
 import './index.less'
 
@@ -16,12 +17,21 @@ export default function IndexPage () {
     }
   })
 
-  const handleNavigate = (type?: any) => {
+  const handleSearch = () => {
+    Taro.navigateTo({ url: '/pages/search/index' })
+  }
+
+  const handleNavigate = (type: any) => {
     Taro.navigateTo({ url: `/pages/list/index?title=${type.name}&path=${type.fullname}` })
   }
 
   return (
     <View className="index list">
+      <BQBInput
+        disabled
+        placeholder="请输入表情包关键词~"
+        onClick={() => handleSearch()}
+      />
       {types.map(type => (
         <BQBItem
           key={type.imgSrc}

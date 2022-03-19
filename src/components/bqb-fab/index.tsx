@@ -2,14 +2,15 @@ import { View } from '@tarojs/components'
 import './index.less'
 
 export default function BQBFab ({
-  className,
   children,
-  onClick
+  onClick,
+  onLongPress
 }) {
   return (
     <View
-      className={`bqb-fab ${className}`}
+      className="bqb-fab"
       onClick={onClick}
+      onLongPress={onLongPress}
     >
       {children}
     </View>
