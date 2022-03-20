@@ -45,8 +45,10 @@ export default function BQBInput ({
         value={innerVal}
         disabled={disabled}
         placeholder={placeholder}
-        onInput={handleInput}
+        confirmType="search"
         className="bqb-input-content"
+        onInput={handleInput}
+        onConfirm={handleBtnClick}
       />
       <Button
         size="mini"
