@@ -1,6 +1,6 @@
-import Taro, { useState, useMemo, useRouter, useShareAppMessage, useReachBottom, useEffect } from '@tarojs/taro'
+import Taro, { useState, useRouter, useShareAppMessage, useEffect } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { useImages } from '../../hooks'
+import { useImages, usePagenation } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
 import BQBFab from '../../components/bqb-fab'
 import bannerImage from '../../assets/banner.png'
@@ -11,10 +11,7 @@ export default function ListPage() {
   const [isAbort, setIsAbort] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
   const { data, setData } = useImages(params.path)
-  const [pageNum, setPageNum] = useState(1)
-
-  const images = useMemo(() => data.slice(0, 21 * pageNum), [data, pageNum])
-  const imageUrls = useMemo(() => data.map(item => item.imgSrc), [data])
+  const { currentData: images } = usePagenation({ data })
 
   useEffect(() => {
     const { title } = params
@@ -33,10 +30,6 @@ export default function ListPage() {
     }
   })
 
-  useReachBottom(() => {
-    setPageNum(pageNum + 1)
-  })
-
   const downloadImages = async (index: number = 0) => {
     try {
       const { title } = params
@@ -44,7 +37,7 @@ export default function ListPage() {
       const nextIndex = index + 1
 
       Taro.showLoading({ title: `保存第${nextIndex}张中...` })
-      const res: any = await Taro.downloadFile({ url: image.imgSrc })
+      const res: any = await Taro.downloadFile({ url: image })
       await Taro.saveImageToPhotosAlbum({ filePath: res.tempFilePath })
       Taro.setStorageSync(`DOWNLOAD ${title}`, nextIndex)
 
@@ -103,7 +96,7 @@ export default function ListPage() {
 
   const handlePreview = (src) => {
     Taro.previewImage({
-      urls: imageUrls,
+      urls: data,
       current: src
     })
   }
@@ -117,12 +110,12 @@ export default function ListPage() {
 
   return (
     <View className='list'>
-      {images.map(img => (
+      {images.map((img, index) => (
         <BQBItem
-          key={img.imgSrc}
-          src={img.imgSrc}
+          key={img + index}
+          src={img}
           showTitle={false}
-          onClick={() => handlePreview(img.imgSrc)}
+          onClick={() => handlePreview(img)}
         />
       ))}
       <BQBFab

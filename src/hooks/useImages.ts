@@ -1,13 +1,9 @@
 import Taro, { useState, useEffect } from '@tarojs/taro'
 import { request } from '../utils/index'
 
-interface Item {
-  imgSrc: string;
-}
-
 const useImages = (path) => {
   const [loading, setLoading] = useState(false)
-  const [images, setImages] = useState<Item[]>([])
+  const [images, setImages] = useState<string[]>([])
   const cacheKey = `images_${path}`
 
   useEffect(() => {
@@ -28,7 +24,7 @@ const useImages = (path) => {
     setLoading(true)
 
     request({
-      url: `https://www.v2fy.com/p/${path}`,
+      url: `https://www.v2fy.com/p/${path}/`,
       dataType: '其他',
       responseType: 'text'
     }).then((data) => {
@@ -36,10 +32,7 @@ const useImages = (path) => {
       Taro.hideNavigationBarLoading()
 
       const newImages = data.match(/original='(.*)'/g).map(item => {
-        return {
-          // raw: item,
-          imgSrc: item.replace(`original='`, '').replace(`'`, '')
-        }
+        return item.replace(`original='`, '').replace(`'`, '')
       })
 
       setLoading(false)

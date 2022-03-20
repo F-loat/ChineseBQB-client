@@ -29,6 +29,7 @@ class App extends Component {
       navigationBarBackgroundColor: '@navBgColor',
       navigationBarTextStyle: '@navTxtStyle'
     },
+    lazyCodeLoading: 'requiredComponents',
     darkmode: true,
     themeLocation: 'theme.json',
     style: 'v2'

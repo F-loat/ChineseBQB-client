@@ -1,6 +1,7 @@
-import Taro, { useRouter, useState, useMemo, useShareAppMessage, useReachBottom } from '@tarojs/taro'
+import Taro, { useRouter, useState, useMemo, useShareAppMessage } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { useSearch } from '../../hooks'
+import { random } from '../../utils'
+import { useSearch, usePagenation } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
 import BQBInput from '../../components/bqb-input'
 import bannerImage from '../../assets/banner.png'
@@ -9,16 +10,18 @@ import './index.less'
 export default function SearchPage () {
   const { params } = useRouter()
   const { data } = useSearch()
-  const [keyword, setKeyword] = useState(params.keyword || '')
-  const [pageNum, setPageNum] = useState(1)
   const [randomCount, setRandomCount] = useState(0)
+  const [keyword, setKeyword] = useState(params.keyword || '')
 
-  const images = useMemo(() => {
-    if (!keyword) return data.sort(() => (Math.random() > 0.5 ? -1 : 1)).slice(0, 12)
-    return data.filter(item => item.name.includes(keyword)).slice(0, 21 * pageNum)
-  }, [data, keyword, randomCount, pageNum])
+  const filteredImages = useMemo(() => {
+    if (!data.length) return []
+    if (!keyword) return Array(12).fill(null).map(() => data[random(0, data.length)])
+    return data.filter(item => item.name.includes(keyword))
+  }, [data, keyword, randomCount])
 
-  const imageUrls = useMemo(() => images.map(item => item.imgSrc), [images])
+  const { currentData: images, setPageNum } = usePagenation({ data: filteredImages })
+
+  const imageUrls = useMemo(() => filteredImages.map(item => item.imgSrc), [filteredImages])
 
   useShareAppMessage(() => {
     return {
@@ -26,11 +29,6 @@ export default function SearchPage () {
       imageUrl: bannerImage,
       path: `/pages/search/index?keyword=${keyword}`
     }
-  })
-
-  useReachBottom(() => {
-    if (!keyword) return
-    setPageNum(pageNum + 1)
   })
 
   const handlePreview = (src) => {

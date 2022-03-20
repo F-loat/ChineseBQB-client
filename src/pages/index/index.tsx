@@ -1,6 +1,6 @@
 import Taro, { useShareAppMessage } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { useTypes } from '../../hooks'
+import { useTypes, usePagenation } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
 import BQBInput from '../../components/bqb-input'
 import bannerImage from '../../assets/banner.png'
@@ -8,6 +8,7 @@ import './index.less'
 
 export default function IndexPage () {
   const { data } = useTypes()
+  const { currentData: types } = usePagenation({ data })
 
   useShareAppMessage(() => {
     return {
@@ -31,7 +32,7 @@ export default function IndexPage () {
         placeholder="请输入表情包关键词~"
         onSearch={handleSearch}
       />
-      {data.map(type => (
+      {types.map(type => (
         <BQBItem
           key={type.imgSrc}
           name={type.name}
