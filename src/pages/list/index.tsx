@@ -3,7 +3,6 @@ import { View } from '@tarojs/components'
 import { useImages, usePagenation } from '../../hooks'
 import BQBItem from '../../components/bqb-item'
 import BQBFab from '../../components/bqb-fab'
-import bannerImage from '../../assets/banner.png'
 import './index.less'
 
 export default function ListPage() {
@@ -25,8 +24,7 @@ export default function ListPage() {
 
   useShareAppMessage(() => {
     return {
-      title: `开源表情包 - ${params.title}`,
-      imageUrl: bannerImage
+      title: `开源表情包 - ${params.title}`
     }
   })
 
